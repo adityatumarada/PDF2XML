@@ -1,22 +1,27 @@
+package Models;
+
 public class HTMLobject {
-    private String id;
     private double top;
     private double left;
-    private double line_height;
     private String font_family;
-    private String font_size;
+    private double font_size;
     private String font_weight;
-    private Double width;
     private String color;
+    private String value;
 
-
-    public String getId() {
-        return id;
+    public HTMLobject(double top, double left, String font_family, double font_size, String font_weight, String color, String value) {
+        this.top = top;
+        this.left = left;
+        this.font_family = font_family;
+        this.font_size = font_size;
+        this.font_weight = font_weight;
+        this.color = color;
+        this.value = value;
     }
 
-    public void setId(String id) {
-        this.id = id;
-    }
+    public String getValue() { return value; }
+
+    public void setValue(String value) { this.value = value; }
 
     public double getTop() {
         return top;
@@ -34,14 +39,6 @@ public class HTMLobject {
         this.left = left;
     }
 
-    public double getLine_height() {
-        return line_height;
-    }
-
-    public void setLine_height(double line_height) {
-        this.line_height = line_height;
-    }
-
     public String getFont_family() {
         return font_family;
     }
@@ -50,11 +47,11 @@ public class HTMLobject {
         this.font_family = font_family;
     }
 
-    public String getFont_size() {
+    public double getFont_size() {
         return font_size;
     }
 
-    public void setFont_size(String font_size) {
+    public void setFont_size(double font_size) {
         this.font_size = font_size;
     }
 
@@ -64,14 +61,6 @@ public class HTMLobject {
 
     public void setFont_weight(String font_weight) {
         this.font_weight = font_weight;
-    }
-
-    public Double getWidth() {
-        return width;
-    }
-
-    public void setWidth(Double width) {
-        this.width = width;
     }
 
     public String getColor() {
