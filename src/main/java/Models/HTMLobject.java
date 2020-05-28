@@ -8,8 +8,13 @@ public class HTMLobject {
     private String font_weight;
     private String color;
     private String value;
+    private Double width;
 
-    public HTMLobject(double top, double left, String font_family, double font_size, String font_weight, String color, String value) {
+
+
+
+
+    public HTMLobject(double top, double left, String font_family, double font_size, String font_weight, String color, String value,double width) {
         this.top = top;
         this.left = left;
         this.font_family = font_family;
@@ -17,6 +22,15 @@ public class HTMLobject {
         this.font_weight = font_weight;
         this.color = color;
         this.value = value;
+        this.width = width;
+    }
+
+    public void setWidth(Double width) {
+        this.width = width;
+    }
+
+    public Double getWidth() {
+        return width;
     }
 
     public String getValue() { return value; }
