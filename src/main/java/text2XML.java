@@ -1,5 +1,7 @@
+import java.util.List;
+
 //jui
 //I will give List<HTMLobject> return me XML string
-public class text2XML {
+public class Text2XML {
 
 }

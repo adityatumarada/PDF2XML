@@ -7,7 +7,6 @@ import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
 
 import javax.xml.parsers.ParserConfigurationException;
-import java.io.File;
 import java.io.IOException;
 import java.io.StringWriter;
 import java.io.Writer;
@@ -27,13 +26,13 @@ public class HTMLformatter {
         {
             double prevTop = formattedHTMLList.get(formattedHTMLList.size()-1).getTop();
             double curTop = htmlObjectList.get(i).getTop();
-            String prevfont = formattedHTMLList.get(formattedHTMLList.size()-1).getFont_family();
-            String curfont = htmlObjectList.get(i).getFont_family();
-            double prevfontSize = formattedHTMLList.get(formattedHTMLList.size()-1).getFont_size();
-            double curfontSize = htmlObjectList.get(i).getFont_size();
+            String prevFont = formattedHTMLList.get(formattedHTMLList.size()-1).getFont_family();
+            String curFont = htmlObjectList.get(i).getFont_family();
+            double prevFontSize = formattedHTMLList.get(formattedHTMLList.size()-1).getFont_size();
+            double curFontSize = htmlObjectList.get(i).getFont_size();
             String prevFontWeight = formattedHTMLList.get(formattedHTMLList.size()-1).getFont_weight();
             String curFontWeight = htmlObjectList.get(i).getFont_weight();
-            if(prevTop==curTop && curfont.equals(prevfont) && prevfontSize==curfontSize && prevFontWeight.equals(curFontWeight))
+            if(prevTop==curTop && curFont.equals(prevFont) && prevFontSize==curFontSize && prevFontWeight.equals(curFontWeight))
             {
                 HTMLobject object = formattedHTMLList.get(formattedHTMLList.size()-1);
                 object.setWidth(object.getWidth()+htmlObjectList.get(i).getWidth());
@@ -53,6 +52,7 @@ public class HTMLformatter {
         pdf.close();
         return output.toString();
     }
+
 
     public static List<HTMLobject> parseHTML(String htmlString) {
         Document doc = Jsoup.parse(htmlString);

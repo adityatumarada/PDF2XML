@@ -10,10 +10,6 @@ public class HTMLobject {
     private String value;
     private Double width;
 
-
-
-
-
     public HTMLobject(double top, double left, String font_family, double font_size, String font_weight, String color, String value,double width) {
         this.top = top;
         this.left = left;
