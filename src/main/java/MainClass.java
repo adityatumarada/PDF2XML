@@ -9,7 +9,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Properties;
 
-public class MainClass {
+class MainClass {
     public static void main(String[] args) {
         try {
             FileReader reader = new FileReader("config.properties");
@@ -24,6 +24,7 @@ public class MainClass {
 
             List<String[][]> tables = PDFTableStripper.getDetails(pdf).getTables();
             String XMLTable = Table2XML.convertToXML(tables);
+//            System.out.print(XMLTable);
 
             //generates HTMLString
             String htmlString = HTMLformatter.generateHTMLFromPDF(pdf);
@@ -40,7 +41,7 @@ public class MainClass {
             formattedHTMLList.clear();
 
             //generates XML from unstructured data
-            Text2XML.XMLGenerationCombined(textList, xmlPath,XMLTable);
+            Text2XML.XMLGenerationCombined(textList, xmlPath, XMLTable);
 
         } catch (ParserConfigurationException | IOException e) {
             e.printStackTrace();
