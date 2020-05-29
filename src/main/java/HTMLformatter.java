@@ -49,7 +49,6 @@ public class HTMLformatter {
         Writer output = new StringWriter();
         new PDFDomTree().writeText(pdf,output);
         output.close();
-        pdf.close();
         return output.toString();
     }
 

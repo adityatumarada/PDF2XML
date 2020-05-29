@@ -4,13 +4,12 @@ import org.apache.pdfbox.pdmodel.PDDocument;
 import javax.xml.parsers.ParserConfigurationException;
 import java.io.File;
 import java.io.FileReader;
-import java.io.FileWriter;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Properties;
 
-public class mainClass {
+public class MainClass {
     public static void main(String[] args) {
         try {
             FileReader reader = new FileReader("config.properties");
@@ -22,6 +21,9 @@ public class mainClass {
             String xmlPath = w.getProperty("xmlPath");
             String inputPDFpath = p.getProperty("inputPDFpath");
             PDDocument pdf = PDDocument.load(new File(inputPDFpath));
+
+            List<String[][]> tables = PDFTableStripper.getDetails(pdf).getTables();
+            String XMLTable = Table2XML.convertToXML(tables);
 
             //generates HTMLString
             String htmlString = HTMLformatter.generateHTMLFromPDF(pdf);
@@ -38,8 +40,7 @@ public class mainClass {
             formattedHTMLList.clear();
 
             //generates XML from unstructured data
-            text2XML.XMLGenerationCombined(textList, xmlPath);
-
+            Text2XML.XMLGenerationCombined(textList, xmlPath,XMLTable);
 
         } catch (ParserConfigurationException | IOException e) {
             e.printStackTrace();

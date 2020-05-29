@@ -14,11 +14,10 @@ import javax.xml.transform.dom.DOMSource;
 import javax.xml.transform.stream.StreamResult;
 import java.io.File;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 
 
-public class text2XML {
+class Text2XML {
 
     // joining the relevant fields together which are separated on different lines
     public static List<HTMLobject> joinHTMLObjectList(List<HTMLobject> textList) {
@@ -98,7 +97,6 @@ public class text2XML {
                 }
             }
         }
-
     }
 
     //Generates XML file & stores it at xmlFilePath location
@@ -131,8 +129,6 @@ public class text2XML {
                 temp.appendChild(document.createTextNode(textData.get(i)));
                 root.appendChild(temp);
             }
-
-
         }
 
         //Transform DOM document to XML
@@ -155,9 +151,9 @@ public class text2XML {
     }
 
     //main function which will call all the required functions & will be called in main
-    public static void XMLGenerationCombined(List<HTMLobject> textList, String XMLPath) {
-        List<HTMLobject> shrinkedList = text2XML.joinHTMLObjectList(textList);
-        text2XML.getKeyValuePairs(shrinkedList);
+    public static void XMLGenerationCombined(List<HTMLobject> textList, String XMLPath,String tableString) {
+        List<HTMLobject> shrinkedList = Text2XML.joinHTMLObjectList(textList);
+        Text2XML.getKeyValuePairs(shrinkedList);
         XMLGenerator(XMLPath);
     }
 
