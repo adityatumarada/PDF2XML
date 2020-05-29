@@ -2,6 +2,7 @@ import Models.HTMLobject;
 import org.w3c.dom.Attr;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
+import org.xml.sax.InputSource;
 
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
@@ -13,6 +14,8 @@ import javax.xml.transform.TransformerFactory;
 import javax.xml.transform.dom.DOMSource;
 import javax.xml.transform.stream.StreamResult;
 import java.io.File;
+import java.io.StringReader;
+import java.io.StringWriter;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -100,7 +103,7 @@ class Text2XML {
     }
 
     //Generates XML file & stores it at xmlFilePath location
-    public static void XMLGenerator(String xmlFilePath) {
+    public static void XMLGenerator(String xmlFilePath,String tableString) {
         //Enables  to obtain DOM parser
         DocumentBuilderFactory documentFactory = DocumentBuilderFactory.newInstance();
         //For obtaining document from XML
@@ -130,7 +133,9 @@ class Text2XML {
                 root.appendChild(temp);
             }
         }
-
+        //transform DOM Document to string
+        String doc= convertDocumentToString(document).replaceFirst(">","><document>")+tableString+"</document>";
+        Document mergedDocument=convertStringToDocument(doc);
         //Transform DOM document to XML
         TransformerFactory transformerFactory = TransformerFactory.newInstance();
         Transformer transformer = null;
@@ -139,7 +144,7 @@ class Text2XML {
         } catch (TransformerConfigurationException e) {
             e.printStackTrace();
         }
-        DOMSource domSource = new DOMSource(document);
+        DOMSource domSource = new DOMSource(mergedDocument);
         StreamResult streamResult = new StreamResult(new File(xmlFilePath));
         try {
             transformer.transform(domSource, streamResult);
@@ -154,7 +159,7 @@ class Text2XML {
     public static void XMLGenerationCombined(List<HTMLobject> textList, String XMLPath,String tableString) {
         List<HTMLobject> shrinkedList = Text2XML.joinHTMLObjectList(textList);
         Text2XML.getKeyValuePairs(shrinkedList);
-        XMLGenerator(XMLPath);
+        XMLGenerator(XMLPath,tableString);
     }
 
     //This method checks the color, fontfamily, fontweight of Elements
@@ -173,6 +178,41 @@ class Text2XML {
             return false;
         }
         return true;
+    }
+
+    //This method converts DOM Document to string
+    private static String convertDocumentToString(Document doc) {
+        TransformerFactory tf = TransformerFactory.newInstance();
+        Transformer transformer;
+        try {
+            transformer = tf.newTransformer();
+            // below code to remove XML declaration
+            // transformer.setOutputProperty(OutputKeys.OMIT_XML_DECLARATION, "yes");
+            StringWriter writer = new StringWriter();
+            transformer.transform(new DOMSource(doc), new StreamResult(writer));
+            String output = writer.getBuffer().toString();
+            return output;
+        } catch (TransformerException e) {
+            e.printStackTrace();
+        }
+
+        return null;
+    }
+
+
+    //This method converts string to DOM document
+    private static Document convertStringToDocument(String xmlStr) {
+        DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
+        DocumentBuilder builder;
+        try
+        {
+            builder = factory.newDocumentBuilder();
+            Document doc = builder.parse( new InputSource( new StringReader( xmlStr ) ) );
+            return doc;
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return null;
     }
 
     private static List<String> Headings = new ArrayList<>();
