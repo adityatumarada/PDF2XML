@@ -57,7 +57,7 @@ class MainClass {
 
         for (HTMLobject htmLobject : formattedHTMLList) {
 
-            if (htmLobject.getValue().equals("Sl."))
+            if (htmLobject.getValue().contains("Sl.")||htmLobject.getValue().contains("Description"))
                 flag = true;
             else if (htmLobject.getValue().equals("TOTAL:")) {
                 flag = false;
