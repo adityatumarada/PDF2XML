@@ -1,6 +1,6 @@
-//aditya
+package com.example.pdf2xml;
 
-import Models.HTMLobject;
+import com.example.pdf2xml.Models.HTMLobject;
 import org.apache.pdfbox.pdmodel.PDDocument;
 import org.fit.pdfdom.PDFDomTree;
 import org.jsoup.Jsoup;
@@ -15,6 +15,7 @@ import java.io.Writer;
 import java.util.ArrayList;
 import java.util.List;
 
+/** Author: Aditya **/
 public class HTMLformatter {
     static List<HTMLobject> formatHTMLList(List<HTMLobject> htmlObjectList) {
         List<HTMLobject> formattedHTMLList = new ArrayList<>();

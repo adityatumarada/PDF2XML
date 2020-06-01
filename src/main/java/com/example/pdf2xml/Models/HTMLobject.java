@@ -1,7 +1,8 @@
 //aditya
 
-package Models;
+package com.example.pdf2xml.Models;
 
+/** Author: Aditya **/
 public class HTMLobject {
     private double top;
     private double left;

@@ -1,152 +1,50 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <document>
     <non-tabular-data>
-        <text>Tax Invoice/Bill of Supply/Cash Memo</text>
-        <text>(Original for Recipient)</text>
-        <text>*ASSPL-Amazon Seller Services Pvt. Ltd., ARIPL-Amazon Retail India Pvt. Ltd. (only where Amazon Retail
-            India Pvt. Ltd. fulfillment center is co-located) Customers desirous of availing input GST credit are
-            requested to create a Business account and purchase on Amazon.in/business from Business eligible offers
-            Please note that this invoice is not a demand for payment
+        <text>Branch Details:</text>
+        <text>Customer Details:</text>
+        <text>Statement For: 2020/05/01 to 2020/06/01</text>
+        <text>Account Statement for the Account: 1207000100362741</text>
+        <text key="Branch Name">MUMBAI, ANUSHAKTI NAGAR</text>
+        <text key="Branch Address">BARC COLONY, ANUSHAKTI NAGAR,MUMBAI</text>
+        <text key="City">MUMBA</text>
+        <text key="Pin">400094</text>
+        <text key="IFSC Code">PUNB0120700</text>
+        <text key="Customer Name">PRASHANT SHUKLA</text>
+        <text key="Customer Address">10 B EVEREST ANUSHAKTI NAGAR</text>
+        <text key="City">MUMBA</text>
+        <text key="Pin">400094</text>
+        <text>Transaction Date Cheque Number Withdrawal Deposit Balance Narration</text>
+        <text>25/05/2020 15999.00 62119.39 Cr. ECOM 355494 Amazon Pay \</text>
+        <text>21/05/2020 330.00 78118.39 Cr. PMJJBY RENEWAL FY:2020-2021</text>
+        <text>21/05/2020 12.00 78448.39 Cr. PMSBY RENEWAL FY:2020-2021</text>
+        <text>13/05/2020 4000.00 78460.39 Cr. UPI/013417671659/P2V/hemanksh arma101-1@okhdfcbank/</text>
+        <text>13/05/2020 399.00 74460.39 Cr. UPI/013416323323/P2V/sandeep0 320001-1@okhdfcbank/S</text>
+        <text>07/05/2020 17500.00 74859.39 Cr. IMPS- IN/012808130585/8108431293/TA NMOY CHAKRABORTY</text>
+        <text>**** Generated through mPassBook ****</text>
+        <text>* Unless constituent notifies the bank immediately of any discrepancy found by him in his statement of
+            Account, it will be taken that he has found the account correct.
         </text>
-        <text>Page 1 of 1</text>
-        <text>For OLD IS GOLD BOOK'S:</text>
-        <text>Authorized Signatory</text>
-        <text key="Order Number">403-4367815-0724316</text>
-        <text key="Invoice Number">IN-9400</text>
-        <text key="Order Date">06.03.2020</text>
-        <text key="Invoice Details">DL-1183551805-1920</text>
-        <text key="Invoice Date">06.03.2020</text>
-        <text>TOTAL:</text>
-        <text key="Amount in Words">Three Hundred only</text>
-        <text>Whether tax is payable under reverse charge - No</text>
-        <text key="Sold By">OLD IS GOLD BOOK'S * Gali No-62, H N-629 Santnagar,Near Milan Vihar NEW DELHI, DELHI, 110084
-            IN
+        <text>* Computer generated entries shown in the statement of account do not require any authentication / initial
+            from the bank official. Please do not accept any manual entry in your computer generated statement of
+            account.
         </text>
-        <text key="PAN No">GMFPS6446M</text>
-        <text key="GST Registration No">NotApplicable</text>
-        <text key="Billing Address">Neelam Shukla 10 B Everest, Anushaktinagar Mumbai 400094 MUMBAI, MAHARASHTRA, 400094
-            IN
+        <text>* Please ensure that all the cheque leaved in your custody is duly branded with your 16 digits account
+            number.
         </text>
-        <text key="State/UT Code">27</text>
-        <text key="Shipping Address">Neelam Shukla Neelam Shukla 10 B Everest, Anushaktinagar Mumbai 400094 MUMBAI,
-            MAHARASHTRA, 400094 IN
+        <text>* Customers are requested in their own interest not to issue cheques without adequate clear funds /
+            arrangements. Such cheques can be returned without making any further reference to them.
         </text>
-        <text key="State/UT Code">27</text>
-        <text key="Place of supply">MAHARASHTRA</text>
-        <text key="Place of delivery">MAHARASHTRA</text>
+        <text>Page 1 of 2</text>
+        <text>* Please maintain minimum average balance, to avoid levy of charges.</text>
+        <text>* Please note Penal interest may be charged in loan accounts due to financial reasons such as over
+            drawings, non receipt of install on the rates prescribed by bank from time to time and for non financial
+            reasons like non submission of, QMS forms, non adherence to terms and conditions etc.
+        </text>
+        <text>* Abbreviations are as under: BR: BRANCH NAME, CSH: Cash, CLG: Clearing, ISO: Inter Sol (##), QAB:
+            Quarterly Average Balance, LF CHG: Ledger Folio Charges, INTT: Interest, CHRG: Charges, RET: Returning, CHQ:
+            Cheque, SI: Standing Instruction, STK STMT: Stock Statement, TFR: Transfer, POSP: Point Of Sale.
+        </text>
     </non-tabular-data>
-    <tabular-data>
-        <table id="1">
-            <tr>
-                <th>Sl. No</th>
-                <th>Description</th>
-                <th>Unit Price</th>
-                <th>Qty</th>
-                <th>Net Amount</th>
-                <th>Tax Rate</th>
-                <th>Tax Type</th>
-                <th>Tax Amount</th>
-                <th>Total Amount</th>
-            </tr>
-            <tr>
-                <td>1</td>
-                <td>Compilers | 9332542457 ( NX-WAZ2-MW3W )</td>
-                <td>₹224.00</td>
-                <td>1</td>
-                <td>₹224.00</td>
-                <td>0%</td>
-                <td>IGST</td>
-                <td>₹0.00</td>
-                <td>₹224.00</td>
-            </tr>
-            <tr>
-                <td>-</td>
-                <td>-</td>
-                <td>-</td>
-                <td>-</td>
-                <td>-</td>
-                <td>0%</td>
-                <td>CGST</td>
-                <td>₹0.00</td>
-                <td>-</td>
-            </tr>
-            <tr>
-                <td>-</td>
-                <td>-</td>
-                <td>-</td>
-                <td>-</td>
-                <td>-</td>
-                <td>0%</td>
-                <td>IGST</td>
-                <td>₹0.00</td>
-                <td>-</td>
-            </tr>
-            <tr>
-                <td>-</td>
-                <td>-</td>
-                <td>-</td>
-                <td>-</td>
-                <td>-</td>
-                <td>0%</td>
-                <td>None</td>
-                <td>₹0.00</td>
-                <td>-</td>
-            </tr>
-            <tr>
-                <td>-</td>
-                <td>Shipping Charges</td>
-                <td>₹76.00</td>
-                <td>-</td>
-                <td>₹76.00</td>
-                <td>0%</td>
-                <td>IGST</td>
-                <td>₹0.00</td>
-                <td>₹76.00</td>
-            </tr>
-            <tr>
-                <td>-</td>
-                <td>-</td>
-                <td>-</td>
-                <td>-</td>
-                <td>-</td>
-                <td>0%</td>
-                <td>CGST</td>
-                <td>₹0.00</td>
-                <td>-</td>
-            </tr>
-            <tr>
-                <td>-</td>
-                <td>-</td>
-                <td>-</td>
-                <td>-</td>
-                <td>-</td>
-                <td>0%</td>
-                <td>IGST</td>
-                <td>₹0.00</td>
-                <td>-</td>
-            </tr>
-            <tr>
-                <td>-</td>
-                <td>-</td>
-                <td>-</td>
-                <td>-</td>
-                <td>-</td>
-                <td>0%</td>
-                <td>None</td>
-                <td>₹0.00</td>
-                <td>-</td>
-            </tr>
-            <tr>
-                <td>TOTAL:</td>
-                <td>-</td>
-                <td>-</td>
-                <td>-</td>
-                <td>-</td>
-                <td>-</td>
-                <td>-</td>
-                <td>₹0.00</td>
-                <td>₹300.00</td>
-            </tr>
-        </table>
-    </tabular-data>
+    <tabular-data/>
 </document>

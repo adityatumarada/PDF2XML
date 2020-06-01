@@ -1,7 +1,8 @@
-package Models;
+package com.example.pdf2xml.Models;
 
 import java.util.List;
 
+/** Author: Eshita **/
 public class Details {
 
     private String Text;

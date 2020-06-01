@@ -1,24 +1,19 @@
-import Models.HTMLobject;
+package com.example.pdf2xml;
+
+import com.example.pdf2xml.Models.Details;
+import com.example.pdf2xml.Models.HTMLobject;
 import org.apache.pdfbox.pdmodel.PDDocument;
 
+import javax.swing.*;
+import javax.swing.filechooser.FileSystemView;
 import javax.xml.parsers.ParserConfigurationException;
 import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.io.File;
-import java.io.FileReader;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Properties;
-
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-
-import javax.swing.JButton;
-import javax.swing.JFrame;
-import java.io.*;
-import javax.swing.*;
-import java.awt.event.*;
-import javax.swing.filechooser.*;
 
 import static java.awt.Color.*;
 
@@ -118,7 +113,9 @@ public class mainClass extends JFrame implements ActionListener {
 
                 PDDocument pdf = PDDocument.load(new File(pdfPath));
 
-                List<String[][]> tables = PDFTableStripper.getDetails(pdf).getTables();
+                Details tableDetails = PDFTableStripper.getDetails(pdf);
+                List<String[][]> tables = tableDetails.getTables();
+                List<double[]> tableCoodinates = tableDetails.getTableAllPoints();
                 String XMLTable = Table2XML.convertToXML(tables);
 
                 //generates HTMLString
@@ -132,11 +129,12 @@ public class mainClass extends JFrame implements ActionListener {
                 htmlObjectList.clear();
 
                 //removes tables from text
-                List<HTMLobject> textList = removeTable(formattedHTMLList);
+                List<HTMLobject> textList = removeTable(formattedHTMLList,tableCoodinates);
                 formattedHTMLList.clear();
 
                 //generates XML from unstructured data
                 Text2XML.XMLGenerationCombined(textList, xmlPath, XMLTable);
+
 
                 //changes color & text of button when done
                 convert.setBounds(50, 100, 200, 30);
@@ -214,23 +212,32 @@ public class mainClass extends JFrame implements ActionListener {
     }
 
     //Removes table from data to be processed
-    public static List<HTMLobject> removeTable(List<HTMLobject> formattedHTMLList) {
+    //Removes table from data to give text
+    private static List<HTMLobject> removeTable(List<HTMLobject> formattedHTMLList, List<double[]> tableCoodinates) {
         List<HTMLobject> textList = new ArrayList<>();
-        boolean flag = false;
 
         for (HTMLobject htmLobject : formattedHTMLList) {
-
-            if (htmLobject.getValue().equals("Sl."))
-                flag = true;
-            else if (htmLobject.getValue().equals("TOTAL:")) {
-                flag = false;
-            }
-
-            if (!flag) {
+            if(!istable(htmLobject,tableCoodinates))
+            {
                 textList.add(htmLobject);
             }
         }
         return textList;
+    }
+
+    //checks if data is present in table
+    private static boolean istable(HTMLobject htmLobject, List<double[]> tableCoodinates) {
+
+        double top = htmLobject.getTop();
+        double left = htmLobject.getLeft();
+        for( double[] coodinates : tableCoodinates)
+        {
+
+            if( top>coodinates[0] && top<coodinates[2] && left>coodinates[1] && left<coodinates[3])
+                return true;
+        }
+
+        return false;
     }
 
 

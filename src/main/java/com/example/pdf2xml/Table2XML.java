@@ -1,7 +1,8 @@
-//aditya
+package com.example.pdf2xml;
 
 import java.util.List;
 
+/** Author: Aditya **/
 public class Table2XML {
 
     public static String convertToXML(List<String[][]> tables) {
