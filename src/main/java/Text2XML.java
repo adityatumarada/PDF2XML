@@ -19,30 +19,34 @@ import java.io.StringWriter;
 import java.util.ArrayList;
 import java.util.List;
 
+/**Author-Jui**/
 
 class Text2XML {
+    //variables
+    private static List<String> Headings = new ArrayList<>();
+    private static List<String> textData = new ArrayList<>();
 
     // joining the relevant fields together which are separated on different lines
     public static List<HTMLobject> joinHTMLObjectList(List<HTMLobject> textList) {
 
         List<HTMLobject> shrinkedList = new ArrayList<>();
         shrinkedList.add(textList.get(0));
-        for (int i = 1; i < textList.size(); i++) {
+        for (int index = 1; index < textList.size(); index++) {
             /*checking some font parameters & distance between two lines
                If the font is equal and they are not distant then will get appended
                Else if font is equal but they are distant then will not get appended
                and if fonts are different will be considered as different valued components*/
-            boolean isFontequal = checkFont(textList.get(i - 1), textList.get(i));
+            boolean isFontequal = checkFont(textList.get(index - 1), textList.get(index));
             if (isFontequal) {
-                boolean appendable = checkDistanceBetween(textList.get(i - 1), textList.get(i));
+                boolean appendable = checkDistanceBetween(textList.get(index - 1), textList.get(index));
                 if (appendable) {
                     HTMLobject object = shrinkedList.get(shrinkedList.size() - 1);
-                    object.setValue(object.getValue() + " " + textList.get(i).getValue());
+                    object.setValue(object.getValue() + " " + textList.get(index).getValue());
                 } else {
-                    shrinkedList.add(textList.get(i));
+                    shrinkedList.add(textList.get(index));
                 }
             } else {
-                shrinkedList.add(textList.get(i));
+                shrinkedList.add(textList.get(index));
             }
         }
         return shrinkedList;
@@ -52,7 +56,7 @@ class Text2XML {
     public static void getKeyValuePairs(List<HTMLobject> shrinkedList) {
         //Initialization of array for keeping track of visited elements
         List<Integer> ProcessedElement = new ArrayList<>();
-        for (int i = 0; i < shrinkedList.size(); i++) {
+        for (int index = 0; index < shrinkedList.size(); index++) {
             ProcessedElement.add(-1);
         }
         /*
@@ -65,37 +69,37 @@ class Text2XML {
          3. Else if line spacing is greater than 15 then key will be text-entry
          4.If line spacing is less than 14.34 then ------key value
          */
-        for (int i = 0; i < shrinkedList.size() - 1; i++) {
-            if (ProcessedElement.get(i) == -1) {
-                if (shrinkedList.get(i).getTop() == shrinkedList.get(i + 1).getTop()) {
-                    if (shrinkedList.get(i).getFont_weight().equals("bold")) {
-                        Headings.add(shrinkedList.get(i).getValue());
-                        textData.add(shrinkedList.get(i + 1).getValue());
-                        ProcessedElement.set(i, 1);
-                        ProcessedElement.set(i + 1, 1);
+        for (int index= 0; index < shrinkedList.size() - 1; index++) {
+            if (ProcessedElement.get(index) == -1) {
+                if (shrinkedList.get(index).getTop() == shrinkedList.get(index + 1).getTop()) {
+                    if (shrinkedList.get(index).getFont_weight().equals("bold")) {
+                        Headings.add(shrinkedList.get(index).getValue());
+                        textData.add(shrinkedList.get(index + 1).getValue());
+                        ProcessedElement.set(index, 1);
+                        ProcessedElement.set(index + 1, 1);
                     }
-                } else if (Math.abs(shrinkedList.get(i).getTop() - shrinkedList.get(i + 1).getTop()) > 14.34
-                        && Math.abs(shrinkedList.get(i).getTop() - shrinkedList.get(i + 1).getTop()) < 15.00) {
-                    if (shrinkedList.get(i).getFont_weight().equals(shrinkedList.get(i + 1).getFont_weight())) {
-                        Headings.add(shrinkedList.get(i).getValue());
-                        textData.add(shrinkedList.get(i + 1).getValue());
-                        ProcessedElement.set(i, 1);
-                        ProcessedElement.set(i + 1, 1);
+                } else if (Math.abs(shrinkedList.get(index).getTop() - shrinkedList.get(index + 1).getTop()) > 14.34
+                        && Math.abs(shrinkedList.get(index).getTop() - shrinkedList.get(index + 1).getTop()) < 15.00) {
+                    if (shrinkedList.get(index).getFont_weight().equals(shrinkedList.get(index + 1).getFont_weight())) {
+                        Headings.add(shrinkedList.get(index).getValue());
+                        textData.add(shrinkedList.get(index + 1).getValue());
+                        ProcessedElement.set(index, 1);
+                        ProcessedElement.set(index + 1, 1);
                     } else {
                         Headings.add("text-entry");
-                        textData.add(shrinkedList.get(i).getValue());
-                        ProcessedElement.set(i, 1);
+                        textData.add(shrinkedList.get(index).getValue());
+                        ProcessedElement.set(index, 1);
                     }
-                } else if (Math.abs(shrinkedList.get(i).getTop() - shrinkedList.get(i + 1).getTop()) > 15.00) {
+                } else if (Math.abs(shrinkedList.get(index).getTop() - shrinkedList.get(index+ 1).getTop()) > 15.00) {
                     Headings.add("text-entry");
-                    textData.add(shrinkedList.get(i).getValue());
-                    ProcessedElement.set(i, 1);
-                } else if (Math.abs(shrinkedList.get(i).getTop() - shrinkedList.get(i + 1).getTop()) < 14.34) {
-                    if (shrinkedList.get(i).getFont_weight().equals("bold")) {
-                        Headings.add(shrinkedList.get(i).getValue());
-                        textData.add(shrinkedList.get(i + 1).getValue());
-                        ProcessedElement.set(i, 1);
-                        ProcessedElement.set(i + 1, 1);
+                    textData.add(shrinkedList.get(index).getValue());
+                    ProcessedElement.set(index, 1);
+                } else if (Math.abs(shrinkedList.get(index).getTop() - shrinkedList.get(index + 1).getTop()) < 14.34) {
+                    if (shrinkedList.get(index).getFont_weight().equals("bold")) {
+                        Headings.add(shrinkedList.get(index).getValue());
+                        textData.add(shrinkedList.get(index + 1).getValue());
+                        ProcessedElement.set(index, 1);
+                        ProcessedElement.set(index + 1, 1);
                     }
                 }
             }
@@ -118,23 +122,24 @@ class Text2XML {
         Element root = document.createElement("non-tabular-data");
         document.appendChild(root);
         //Creates temp node with required values and attributes and appends them as a child to root
-        for (int i = 0; i < Headings.size(); i++) {
-            Headings.set(i, Headings.get(i).replace(":", "").trim());
-            if (!Headings.get(i).equals("TOTAL")) {
-                Element temp = document.createElement("text");
+        for (int index = 0; index < Headings.size(); index++) {
+            Headings.set(index, Headings.get(index).replace(":", "").trim());
+
+                Element toBeProcessed = document.createElement("text");
                 //for attribute creation
-                if (!Headings.get(i).equals("text-entry")) {
+                if (!Headings.get(index).equals("text-entry")) {
                     Attr attr = document.createAttribute("key");
-                    attr.setValue(Headings.get(i));
-                    temp.setAttributeNode(attr);
+                    attr.setValue(Headings.get(index));
+                    toBeProcessed.setAttributeNode(attr);
                 }
                 //gives entry value
-                temp.appendChild(document.createTextNode(textData.get(i)));
-                root.appendChild(temp);
-            }
+                toBeProcessed.appendChild(document.createTextNode(textData.get(index)));
+                root.appendChild(toBeProcessed);
+
         }
         //transform DOM Document to string
         String doc= convertDocumentToString(document).replaceFirst(">","><document>")+tableString+"</document>";
+
         Document mergedDocument=convertStringToDocument(doc);
         //Transform DOM document to XML
         TransformerFactory transformerFactory = TransformerFactory.newInstance();
@@ -215,6 +220,5 @@ class Text2XML {
         return null;
     }
 
-    private static List<String> Headings = new ArrayList<>();
-    private static List<String> textData = new ArrayList<>();
+
 }
