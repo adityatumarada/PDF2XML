@@ -2,7 +2,15 @@ package Models;
 
 import java.util.List;
 
-public class Details{
+public class Details {
+
+    private String Text;
+    private List<String[][]> Tables;
+    private String Xcoordinates;
+    private String RowPartitions;
+    private double[][] TableVerticalCoord; // Horizontal is same for even page, see : PART 1
+    private double[][] TableHorizontCoord;
+    private List<double[]> TableAllPoints;
 
     public String getText() {
         return Text;
@@ -36,9 +44,28 @@ public class Details{
         RowPartitions = rowPartitions;
     }
 
-    String Text;
-    List<String[][]> Tables;
-    String Xcoordinates;
-    String RowPartitions;
+    public double[][] getTableVerticalCoord() {
+        return TableVerticalCoord;
+    }
 
+    public void setTableVerticalCoord(double[][] tableVerticalCoord) {
+        TableVerticalCoord = tableVerticalCoord;
+    }
+
+    public double[][] getTableHorizontCoord() {
+        return TableHorizontCoord;
+    }
+
+    public void setTableHorizontCoord(double[][] tableHorizontCoord) {
+        TableHorizontCoord = tableHorizontCoord;
+    }
+
+
+    public List<double[]> getTableAllPoints() {
+        return TableAllPoints;
+    }
+
+    public void setTableAllPoints(List<double[]> tableAllPoints) {
+        TableAllPoints = tableAllPoints;
+    }
 }

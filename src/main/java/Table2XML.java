@@ -1,3 +1,5 @@
+//aditya
+
 import java.util.List;
 
 public class Table2XML {
@@ -10,8 +12,9 @@ public class Table2XML {
             for (int i = 0; i < table.length; i++) {
                 XMLstring.append("<tr>");
                 for (int j = 0; j < table[0].length; j++) {
-
-                    String string = table[i][j].trim().replace("\n", " ");
+                    String string="";
+                    if(table[i][j]!=null)
+                     string = table[i][j].trim().replace("\n", " ");
                     if (i == 0) {
                         if (!string.isEmpty())
                             XMLstring.append("<th>").append(string).append("</th>");
