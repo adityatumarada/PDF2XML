@@ -49,8 +49,8 @@ Text extraction needs to be generalised for a wider range of "line-spacings"
 
 #  Softwares & platforms used
 
-1.JDK Platform version 8
-2.Apache PDFBox version 2.0.19
+- **JDK Platform version 8**
+- **Apache PDFBox version 2.0.19**
 
 
 
