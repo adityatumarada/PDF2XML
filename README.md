@@ -38,10 +38,13 @@ Our approach is unique because we handle tables separately and text separately. 
 
 ![enter image description here](https://github.com/adityatumarada/PDF2XML/blob/master/Charts/TableExtraction.png)
 
+More types of tables need to yet be accomodated, in the extraction algorithm.
 
 ## Text Extraction
 
 ![enter image description here](https://github.com/adityatumarada/PDF2XML/blob/master/Charts/TextExtraction.png)
+
+Text extraction needs to be generalised for a wider range of "line-spacings"
 
 #  Execution
 
