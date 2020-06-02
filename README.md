@@ -8,7 +8,8 @@ Project built under Citi, Pune as summer analyst intern project
 1. [Problem Statement](https://github.com/adityatumarada/PDF2XML#problem-statement)
 2. [Features](https://github.com/adityatumarada/PDF2XML#features)
 3. [Approach](https://github.com/adityatumarada/PDF2XML#approach)
-4. [Execution](https://github.com/adityatumarada/PDF2XML#execution)
+4. [Libraries Used](https://github.com/adityatumarada/PDF2XML/blob/master/README.md#softwares--platforms-used)
+5. [Execution](https://github.com/adityatumarada/PDF2XML#execution) 
 
 # Problem Statement
 
