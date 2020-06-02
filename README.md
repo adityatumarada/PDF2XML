@@ -1,3 +1,13 @@
+# PDF2XML
+
+Project built under Citi, Pune as summer analyst intern project
+
+#  Contents
+1. [Problem Statement](https://github.com/adityatumarada/PDF2XML#problem-statement)
+2. [Features](https://github.com/adityatumarada/PDF2XML#features)
+3. [Approach](https://github.com/adityatumarada/PDF2XML#approach)
+4. [Execution](www.google.com)
+
 # Problem Statement
 
 Write a PDF to XML utility (tool) by leveraging the pdfbox library so that we can
@@ -31,3 +41,25 @@ Our approach is unique because we handle tables separately and text separately. 
 
 ![enter image description here](https://github.com/adityatumarada/PDF2XML/blob/master/Charts/TextExtraction.png)
 
+#  Execution
+
+The program can be rum in many ways.
+
+##  Executing using `mainClass.java`
+
+ 1. Open the terminal 
+ 2. Change your current working directory (using `cd`) 
+    `cd /<your>/<path>/.../PDF2XML/src/main/java/com/example/pdf2xml/mainClass.java`
+3. Compile the file
+	`javac mainClass.java`
+4. Run the file
+	`java mainClass`
+
+##  Executing using `.jar` file
+
+If you have obtained the .jar file from the hackerearth portal, follow the below given instructions
+ 1. Open the terminal 
+ 2. Change your current working directory (using `cd`):
+	  `cd your/path/here/`
+ 3. Run the file
+      `java -jar PDFtoXML-me.jar`
