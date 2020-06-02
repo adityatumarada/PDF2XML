@@ -46,6 +46,14 @@ More types of tables need to yet be accomodated, in the extraction algorithm.
 
 Text extraction needs to be generalised for a wider range of "line-spacings"
 
+
+#  Softwares & platforms used
+
+1.JDK Platform version 8
+2.Apache PDFBox version 2.0.19
+
+
+
 #  Execution
 
 The program can be rum in many ways.
