@@ -25,3 +25,8 @@ Our approach is unique because we handle tables separately and text separately. 
 ## Table Extraction
 
 ![enter image description here](https://github.com/adityatumarada/PDF2XML/blob/master/Charts/TableExtraction.png)
+
+## Image Extraction
+
+![enter image description here](https://github.com/adityatumarada/PDF2XML/blob/master/Charts/TextExtraction.png)
+
