@@ -2,6 +2,8 @@
 
 Project built under Citi, Pune as summer analyst intern project
 
+> Note:  The other repository is at [https://github.com/EshitaShukla/PDFToXML](https://github.com/EshitaShukla/PDFToXML), where only some parts of the Program ares available. Project structure is different in both reposetories
+
 #  Contents
 1. [Problem Statement](https://github.com/adityatumarada/PDF2XML#problem-statement)
 2. [Features](https://github.com/adityatumarada/PDF2XML#features)
