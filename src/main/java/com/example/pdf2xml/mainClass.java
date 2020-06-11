@@ -132,12 +132,9 @@ public class mainClass extends JFrame implements ActionListener {
 
                 //converts tables to XML
                 List<String> XMLtable = Table2XML.convertToXML(tableDetails);
-                System.out.println(XMLtable.get(0));
-                System.out.println(XMLtable.get(1));
 
                 //use XMLtable and htmlObjectList for text2XML
-
-
+                Text2XML.XMLGenerationCombined(htmlObjectList,xmlPath,XMLtable);
 
                 //changes color & text of button when done
                 convert.setBounds(50, 100, 200, 30);
@@ -171,13 +168,14 @@ public class mainClass extends JFrame implements ActionListener {
         }
         if (action.equals("choosexml")) {
             JFileChooser jFilechooser = new JFileChooser(FileSystemView.getFileSystemView().getHomeDirectory());
-
+            //allow selection of folders
+            jFilechooser.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
             // invoke the showsOpenDialog function to show the path
             int openStatus = jFilechooser.showOpenDialog(null);
 
             if (openStatus == JFileChooser.APPROVE_OPTION) {
                 // get the selected filepath
-                xmlPath = jFilechooser.getSelectedFile().getAbsolutePath();
+                xmlPath = jFilechooser.getSelectedFile().getAbsolutePath()+"output.xml";
                 xmlPath.replace("\\", "/");
                 xmlFilePath.setText(xmlPath);
 

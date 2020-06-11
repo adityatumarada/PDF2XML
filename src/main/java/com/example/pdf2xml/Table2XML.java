@@ -5,7 +5,7 @@ import com.example.pdf2xml.Models.Details;
 import java.util.ArrayList;
 import java.util.List;
 
-/** Author: Aditya **/
+/* Author: Aditya */
 public class Table2XML {
 
     public static List<String> convertToXML(Details[] details) {
@@ -44,12 +44,13 @@ public class Table2XML {
                 String starTag = "<row-entry>";
                 String endTag = "</row-entry>";
                 if(table[0][j]!=null) {
-                     starTag = "<" + table[0][j].trim().replace("\n", " ").replace(" ", "-") + ">";
-                     endTag = "</" + table[0][j].trim().replace("\n", " ").replace(" ", "-") + ">";
+                    String header = table[0][j].trim().replaceAll("[^a-zA-Z0-9]", "");
+                    starTag = "<" +header + ">";
+                    endTag = "</" +header + ">";
                 }
                 String string = "";
                 if(table[i][j]!=null)
-                    string = table[i][j].trim().replace("\n", " ");
+                    string = table[i][j].trim().replaceAll("\n", " ");
                 if(string.length()==0)
                     string="-";
                 XMLstring.append(starTag).append(string).append(endTag);
@@ -58,6 +59,7 @@ public class Table2XML {
         }
         XMLstring.append("</table>");
 
+        System.out.println(XMLstring.toString());
         return XMLstring.toString();
     }
 
