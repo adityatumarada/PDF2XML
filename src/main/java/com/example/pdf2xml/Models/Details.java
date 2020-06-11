@@ -1,72 +1,33 @@
 package com.example.pdf2xml.Models;
 
-import java.util.List;
 
 /** Author: Eshita **/
 public class Details {
+    private int pageNo;
+    private String[][] Tables;
+    private double[] TableAllPoints;
 
-    private String Text;
-    private List<String[][]> Tables;
-    private String Xcoordinates;
-    private String RowPartitions;
-    private double[][] TableVerticalCoord; // Horizontal is same for even page, see : PART 1
-    private double[][] TableHorizontCoord;
-    private List<double[]> TableAllPoints;
-
-    public String getText() {
-        return Text;
+    public int getPageNo() {
+        return pageNo;
     }
 
-    public void setText(String text) {
-        Text = text;
+    public void setPageNo(int pageNo) {
+        this.pageNo = pageNo;
     }
 
-    public List<String[][]> getTables() {
+    public String[][] getTables() {
         return Tables;
     }
 
-    public void setTables(List<String[][]> tables) {
+    public void setTables(String[][] tables) {
         Tables = tables;
     }
 
-    public String getXcoordinates() {
-        return Xcoordinates;
-    }
-
-    public void setXcoordinates(String xcoordinates) {
-        Xcoordinates = xcoordinates;
-    }
-
-    public String getRowPartitions() {
-        return RowPartitions;
-    }
-
-    public void setRowPartitions(String rowPartitions) {
-        RowPartitions = rowPartitions;
-    }
-
-    public double[][] getTableVerticalCoord() {
-        return TableVerticalCoord;
-    }
-
-    public void setTableVerticalCoord(double[][] tableVerticalCoord) {
-        TableVerticalCoord = tableVerticalCoord;
-    }
-
-    public double[][] getTableHorizontCoord() {
-        return TableHorizontCoord;
-    }
-
-    public void setTableHorizontCoord(double[][] tableHorizontCoord) {
-        TableHorizontCoord = tableHorizontCoord;
-    }
-
-
-    public List<double[]> getTableAllPoints() {
+    public double[] getTableAllPoints() {
         return TableAllPoints;
     }
 
-    public void setTableAllPoints(List<double[]> tableAllPoints) {
+    public void setTableAllPoints(double[] tableAllPoints) {
         TableAllPoints = tableAllPoints;
     }
 }
