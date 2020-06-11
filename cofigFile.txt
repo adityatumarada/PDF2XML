@@ -1,5 +1,5 @@
 Description
- No.
+No.
 Withdraw
 Deposit
 Debit
@@ -7,3 +7,5 @@ Credit
 DEBIT
 CREDIT
 DATE
+Amount
+AMOUNT
