@@ -24,8 +24,6 @@ import java.util.*;
 public class PDFTableStripper extends PDFTextStripper
 {
 
-
-
     public static Details[] getDetails(PDDocument document) throws IOException {
 
         // Some helper variables are declared
@@ -37,10 +35,12 @@ public class PDFTableStripper extends PDFTextStripper
         // This number changes with the quality of the pdf
         final double res = 72;
 
+        String configFileName="cofigFile.txt";
+
         PDFTableStripper stripper = new PDFTableStripper();
         stripper.setSortByPosition(true);
+//        System.out.println(new File("../some/relative/path").getCanonicalPath());
 
-        String configFileName="cofigFile.txt";
 
             // ****************** PART 1 ******************************************************
             // Extract TEXT data from each page on the pdf
@@ -476,6 +476,8 @@ public class PDFTableStripper extends PDFTextStripper
                         }
                     }
 
+                    // Exchange this part
+
                     // Creating the Tables 2D array of strings, for the "Details" object
                     String[][] Tables = new String[r+1][highestActualNumOfCol];
                     for (int m=0; m<=r; m++){
@@ -483,14 +485,18 @@ public class PDFTableStripper extends PDFTextStripper
                         for (int n=0; n<highestActualNumOfCol; n++){
 //                            System.out.println(m + " " +n);
 //                            String Content = rowColumnWiseContent[i+m][n];
-//                            Tables[m][n] = Content;
+                            Tables[m][n] = Tables_temp[m][n];
 
-//                            System.out.println("******" +Tables_temp[m][n] + " " + Tables_temp[1][0]);
+//                            System.out.println("******" +Tables[m][n]);
                         }
                     }
 
+
+
                     // Adding table to the "Details" object
-                    arrayOfDetails[detailsPointer].setTables(Tables_temp);
+                    arrayOfDetails[detailsPointer].setTables(Tables);
+
+                    // Exchange this part
 
                     // Adding coordinates to the "Details" object
                     double x1,x2,y1,y2;
@@ -549,7 +555,6 @@ public class PDFTableStripper extends PDFTextStripper
             return arrayOfDetails;
 
     }
-
 
 
 
