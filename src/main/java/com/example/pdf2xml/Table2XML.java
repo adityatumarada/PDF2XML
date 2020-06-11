@@ -1,38 +1,61 @@
 package com.example.pdf2xml;
 
+import com.example.pdf2xml.Models.Details;
+
+import java.lang.reflect.Array;
+import java.security.PublicKey;
+import java.util.ArrayList;
 import java.util.List;
 
 /** Author: Aditya **/
 public class Table2XML {
 
-    public static String convertToXML(List<String[][]> tables) {
-        StringBuilder XMLstring = new StringBuilder("<tabular-data>");
-        int table_id = 1;
-        for (String[][] table : tables) {
-            XMLstring.append("<table id=\"").append(table_id).append("\">");
-            for (int i = 0; i < table.length; i++) {
-                XMLstring.append("<tr>");
-                for (int j = 0; j < table[0].length; j++) {
-                    String string="";
-                    if(table[i][j]!=null)
-                     string = table[i][j].trim().replace("\n", " ");
-                    if (i == 0) {
-                        if (!string.isEmpty())
-                            XMLstring.append("<th>").append(string).append("</th>");
-                        else
-                            XMLstring.append("<th>-</th>");
-                    } else {
-                        if (string.length() != 0)
-                            XMLstring.append("<td>").append(string).append("</td>");
-                        else
-                            XMLstring.append("<td>-</td>");
-                    }
-                }
-                XMLstring.append("</tr>");
-            }
-            XMLstring.append("</table>");
+    public static List<String> convertToXML(Details[] details) {
+
+        if(details.length==0)
+        {
+            List<String> empty = new ArrayList<>();
+            return empty;
         }
-        XMLstring.append("</tabular-data>");
+
+        int totalPages = details[details.length-1].getPageNo();
+        List<String> tableXML = new ArrayList<>();
+        for(int i=0;i<=totalPages;i++)
+        {
+            tableXML.add(" ");
+        }
+        int tableID=1;
+
+        for(Details detail : details)
+        {
+            String temp=tableXML.get(detail.getPageNo());
+            if(temp.isEmpty())
+                tableXML.set(detail.getPageNo(),table2XML(detail.getTables(),tableID));
+            else
+                tableXML.set(detail.getPageNo(),temp+table2XML(detail.getTables(),tableID));
+            tableID++;
+        }
+        return tableXML;
+    }
+
+    public static String table2XML(String[][] table,int table_id){
+        StringBuilder XMLstring = new StringBuilder("");
+        XMLstring.append("<table id=\"").append(table_id).append("\">");
+        for (int i = 1; i < table.length; i++) {
+            XMLstring.append("<row>");
+            for (int j = 0; j < table[0].length; j++) {
+                String starTag = "<"+table[0][j].trim().replace("\n"," ").replace(" ","-")+">";
+                String endTag = "</"+table[0][j].trim().replace("\n"," ").replace(" ","-")+">";
+                String string = "";
+                if(table[i][j]!=null)
+                    string = table[i][j].trim().replace("\n", " ");
+                if(string.length()==0)
+                    string="-";
+                XMLstring.append(starTag).append(string).append(endTag);
+            }
+            XMLstring.append("</row>");
+        }
+        XMLstring.append("</table>");
 
         return XMLstring.toString();
     }

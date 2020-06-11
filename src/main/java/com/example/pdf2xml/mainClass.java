@@ -113,27 +113,28 @@ public class mainClass extends JFrame implements ActionListener {
 
                 PDDocument pdf = PDDocument.load(new File(pdfPath));
 
-                Details tableDetails = PDFTableStripper.getDetails(pdf);
-                List<String[][]> tables = tableDetails.getTables();
-                List<double[]> tableCoodinates = tableDetails.getTableAllPoints();
-                String XMLTable = Table2XML.convertToXML(tables);
+                //extracting tables from pdf
+                Details[] tableDetails = PDFTableStripper.getDetails(pdf);
 
                 //generates HTMLString
                 String htmlString = HTMLformatter.generateHTMLFromPDF(pdf);
 
                 //generates List of HTML objects.
-                List<HTMLobject> htmlObjectList = HTMLformatter.parseHTML(htmlString);
+                ArrayList<List<HTMLobject>> htmlObjectList = HTMLformatter.parseHTML(htmlString);
 
-                //concats characters of same line
-                List<HTMLobject> formattedHTMLList = HTMLformatter.formatHTMLList(htmlObjectList);
-                htmlObjectList.clear();
+                //remove tables
+                for(Details table : tableDetails)
+                {
+                    int pgNo = table.getPageNo();
+                    List<HTMLobject> textList = removeTable(htmlObjectList.get(pgNo),table.getTableAllPoints());
+                    htmlObjectList.set(pgNo,textList);
+                }
 
-                //removes tables from text
-                List<HTMLobject> textList = removeTable(formattedHTMLList,tableCoodinates);
-                formattedHTMLList.clear();
+                //converts tables to XML
+                List<String> XMLtable = Table2XML.convertToXML(tableDetails);
 
-                //generates XML from unstructured data
-                Text2XML.XMLGenerationCombined(textList, xmlPath, XMLTable);
+                //use XMLtable and htmlObjectList for text2XML
+
 
 
                 //changes color & text of button when done
@@ -143,7 +144,7 @@ public class mainClass extends JFrame implements ActionListener {
                 convert.setBackground(green);
 
 
-            } catch (ParserConfigurationException | IOException e) {
+            } catch (IOException | ParserConfigurationException e) {
                 e.printStackTrace();
             }
 
@@ -213,7 +214,7 @@ public class mainClass extends JFrame implements ActionListener {
 
     //Removes table from data to be processed
     //Removes table from data to give text
-    private static List<HTMLobject> removeTable(List<HTMLobject> formattedHTMLList, List<double[]> tableCoodinates) {
+    private static List<HTMLobject> removeTable(List<HTMLobject> formattedHTMLList, double[] tableCoodinates) {
         List<HTMLobject> textList = new ArrayList<>();
 
         for (HTMLobject htmLobject : formattedHTMLList) {
@@ -226,16 +227,14 @@ public class mainClass extends JFrame implements ActionListener {
     }
 
     //checks if data is present in table
-    private static boolean istable(HTMLobject htmLobject, List<double[]> tableCoodinates) {
+    private static boolean istable(HTMLobject htmLobject, double[] coodinates) {
 
         double top = htmLobject.getTop();
         double left = htmLobject.getLeft();
-        for( double[] coodinates : tableCoodinates)
-        {
 
-            if( top>coodinates[0] && top<coodinates[2] && left>coodinates[1] && left<coodinates[3])
+        if( top>coodinates[0] && top<coodinates[1] && left>coodinates[2] && left<coodinates[3])
                 return true;
-        }
+
 
         return false;
     }
