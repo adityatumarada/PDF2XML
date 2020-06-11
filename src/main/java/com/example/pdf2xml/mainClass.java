@@ -132,6 +132,8 @@ public class mainClass extends JFrame implements ActionListener {
 
                 //converts tables to XML
                 List<String> XMLtable = Table2XML.convertToXML(tableDetails);
+                System.out.println(XMLtable.get(0));
+                System.out.println(XMLtable.get(1));
 
                 //use XMLtable and htmlObjectList for text2XML
 

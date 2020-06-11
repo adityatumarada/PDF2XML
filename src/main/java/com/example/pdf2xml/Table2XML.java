@@ -2,8 +2,6 @@ package com.example.pdf2xml;
 
 import com.example.pdf2xml.Models.Details;
 
-import java.lang.reflect.Array;
-import java.security.PublicKey;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -14,15 +12,14 @@ public class Table2XML {
 
         if(details.length==0)
         {
-            List<String> empty = new ArrayList<>();
-            return empty;
+            return new ArrayList<>();
         }
 
         int totalPages = details[details.length-1].getPageNo();
         List<String> tableXML = new ArrayList<>();
         for(int i=0;i<=totalPages;i++)
         {
-            tableXML.add(" ");
+            tableXML.add("");
         }
         int tableID=1;
 
@@ -44,8 +41,12 @@ public class Table2XML {
         for (int i = 1; i < table.length; i++) {
             XMLstring.append("<row>");
             for (int j = 0; j < table[0].length; j++) {
-                String starTag = "<"+table[0][j].trim().replace("\n"," ").replace(" ","-")+">";
-                String endTag = "</"+table[0][j].trim().replace("\n"," ").replace(" ","-")+">";
+                String starTag = "<row-entry>";
+                String endTag = "</row-entry>";
+                if(table[0][j]!=null) {
+                     starTag = "<" + table[0][j].trim().replace("\n", " ").replace(" ", "-") + ">";
+                     endTag = "</" + table[0][j].trim().replace("\n", " ").replace(" ", "-") + ">";
+                }
                 String string = "";
                 if(table[i][j]!=null)
                     string = table[i][j].trim().replace("\n", " ");
