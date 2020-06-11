@@ -59,7 +59,7 @@ public class Table2XML {
         }
         XMLstring.append("</table>");
 
-        System.out.println(XMLstring.toString());
+
         return XMLstring.toString();
     }
 

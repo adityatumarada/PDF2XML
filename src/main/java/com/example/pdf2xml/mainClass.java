@@ -18,10 +18,11 @@ import java.util.List;
 import static java.awt.Color.*;
 
 /** Authors: Jui, Aditya **/
-public class mainClass extends JFrame implements ActionListener {
+public class MainClass extends JFrame implements ActionListener {
     private static final long serialVersionUID = 1L;
     private String pdfPath = "";
     private String xmlPath = "";
+    private String folderPath = "";
     private JTextField pdfFilePath;
     private JTextField xmlFilePath;
     private JButton choosePdf = new JButton("CHOOSE PDF");
@@ -31,7 +32,7 @@ public class mainClass extends JFrame implements ActionListener {
     //gui creation -
     //3 buttons- 2 for choosing filepaths and 1 for actual conversion
     //2 textfields for showing the paths chosen
-    public mainClass() throws IOException {
+    public MainClass() throws IOException {
         //Background colour -gray
         this.getContentPane().setBackground(lightGray);
         this.getContentPane().setLayout(new FlowLayout());
@@ -136,6 +137,9 @@ public class mainClass extends JFrame implements ActionListener {
                 //use XMLtable and htmlObjectList for text2XML
                 Text2XML.XMLGenerationCombined(htmlObjectList,xmlPath,XMLtable);
 
+                //extracting images
+                ImageExtractor.extractImages(pdf,folderPath);
+
                 //changes color & text of button when done
                 convert.setBounds(50, 100, 200, 30);
                 convert.setText("Done!!");
@@ -175,7 +179,8 @@ public class mainClass extends JFrame implements ActionListener {
 
             if (openStatus == JFileChooser.APPROVE_OPTION) {
                 // get the selected filepath
-                xmlPath = jFilechooser.getSelectedFile().getAbsolutePath()+"output.xml";
+                folderPath = jFilechooser.getSelectedFile().getAbsolutePath();
+                xmlPath=folderPath+"/output.xml";
                 xmlPath.replace("\\", "/");
                 xmlFilePath.setText(xmlPath);
 
@@ -186,7 +191,7 @@ public class mainClass extends JFrame implements ActionListener {
     private static void createAndShowGUI() throws IOException {
 
         //creation of swing frame
-        JFrame frame = new mainClass();
+        JFrame frame = new MainClass();
         frame.setSize(400, 400);
         frame.pack();
         frame.setVisible(true);

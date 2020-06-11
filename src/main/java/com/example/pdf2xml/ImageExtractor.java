@@ -18,17 +18,17 @@ import java.io.IOException;
 public class ImageExtractor {
 
     // function extracts images from the pdf.
-    public static void extractImages(PDDocument document) throws IOException {
+    public static void extractImages(PDDocument document,String path) throws IOException {
 
         PDPageTree list = document.getPages();
+        int i = 1;
         for (PDPage page : list) {
             PDResources pdResources = page.getResources();
-            int i = 1;
             for (COSName name : pdResources.getXObjectNames()) {
                 PDXObject o = pdResources.getXObject(name);
                 if (o instanceof PDImageXObject) {
                     PDImageXObject image = (PDImageXObject) o;
-                    String filename = "extracted-image-" + i + ".png";
+                    String filename =path+ "/extracted-image-" + i + ".png";
                     ImageIO.write(image.getImage(), "png", new File(filename));
                     i++;
                 }
