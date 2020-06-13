@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Author:Jui-->
+<?import javafx.scene.text.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0"
+            prefWidth="600.0" style="-fx-background-color: #ffffff;" xmlns="http://javafx.com/javafx/8"
+            xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.pdf2xml.Controller">
+    <children>
+        <AnchorPane layoutX="31.0" layoutY="44.0" opacity="0.62" prefHeight="112.0" prefWidth="109.0" rotate="45.0"
+                    style="-fx-background-color: #f04393;"/>
+        <AnchorPane layoutX="109.0" layoutY="44.0" opacity="0.82" prefHeight="112.0" prefWidth="109.0" rotate="-45.0"
+                    style="-fx-background-color: #f9c449;"/>
+        <AnchorPane layoutX="190.0" layoutY="44.0" opacity="0.87" prefHeight="112.0" prefWidth="109.0" rotate="-45.0"
+                    style="-fx-background-color: #3c4cad;"/>
+        <AnchorPane layoutX="271.0" layoutY="44.0" opacity="0.82" prefHeight="112.0" prefWidth="109.0" rotate="-45.0"
+                    style="-fx-background-color: #eba49c;"/>
+        <AnchorPane layoutX="349.0" layoutY="44.0" opacity="0.88" prefHeight="112.0" prefWidth="109.0" rotate="-45.0"
+                    style="-fx-background-color: #138086;"/>
+        <AnchorPane layoutX="427.0" layoutY="44.0" opacity="0.83" prefHeight="112.0" prefWidth="109.0" rotate="-45.0"
+                    style="-fx-background-color: #534666;"/>
+        <AnchorPane layoutX="514.0" layoutY="51.0" opacity="0.71" prefHeight="112.0" prefWidth="109.0" rotate="-45.0"
+                    style="-fx-background-color: #f04393;"/>
+        <AnchorPane layoutX="7.0" layoutY="3.0" prefHeight="206.0" prefWidth="653.0">
+            <children>
+                <Label layoutX="51.0" layoutY="61.0" prefHeight="39.0" prefWidth="574.0" text="PDF  TO XML CONVERTER"
+                       textFill="WHITE">
+                    <font>
+                        <Font name="Constantia Bold" size="42.0"/>
+                    </font>
+                </Label>
+                <Label layoutX="267.0" layoutY="176.0" text="TEAM VJTI" textFill="#031b88">
+                    <font>
+                        <Font name="Constantia Bold" size="28.0"/>
+                    </font>
+                </Label>
+            </children>
+        </AnchorPane>
+        <AnchorPane layoutY="219.0" prefHeight="181.0" prefWidth="600.0" style="-fx-background-color: #000000;">
+            <children>
+                <Label fx:id="XMLPath" layoutX="251.0" layoutY="65.0" prefHeight="26.0" prefWidth="291.0"
+                       style="-fx-background-color: #ffffff; -fx-border-color: #031b88;" text=" XML Path :">
+                    <font>
+                        <Font name="Constantia" size="16.0"/>
+                    </font>
+                </Label>
+                <Label fx:id="PDFPath" layoutX="251.0" layoutY="21.0" prefHeight="26.0" prefWidth="291.0"
+                       style="-fx-background-color: #ffffff; -fx-border-color: #031b88;" text=" PDF Path :">
+                    <font>
+                        <Font name="Constantia" size="16.0"/>
+                    </font>
+                </Label>
+                <Button fx:id="pdfbutton" layoutX="56.0" layoutY="20.0" onAction="#handleChoosePDF" prefHeight="26.0"
+                        prefWidth="143.0"
+                        style="-fx-background-color: #031b88; -fx-border-color: #ffffff; -fx-border-width: 2px; -fx-background-radius: 60px; -fx-border-radius: 60px;"
+                        text="CHOOSE PDF" textFill="WHITE">
+                    <font>
+                        <Font name="Constantia" size="13.0"/>
+                    </font>
+                </Button>
+                <Button layoutX="56.0" layoutY="64.0" onAction="#handleChooseXML" prefHeight="26.0" prefWidth="143.0"
+                        style="-fx-background-color: #031b88; -fx-border-color: #ffffff; -fx-border-width: 2px; -fx-background-radius: 60px; -fx-border-radius: 60px;"
+                        text="CHOOSE XML" textFill="WHITE">
+                    <font>
+                        <Font name="Constantia" size="13.0"/>
+                    </font>
+                </Button>
+                <Button layoutX="215.0" layoutY="110.0" onAction="#handleConvert" prefHeight="33.0" prefWidth="143.0"
+                        style="-fx-background-color: #031b88; -fx-background-radius: 60px; -fx-border-color: #ffffff; -fx-border-radius: 60px; -fx-border-width: 3px;"
+                        text="CONVERT" textFill="WHITE">
+                    <font>
+                        <Font name="Constantia Bold" size="22.0"/>
+                    </font>
+                </Button>
+            </children>
+        </AnchorPane>
+    </children>
+</AnchorPane>
