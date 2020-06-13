@@ -7,3 +7,5 @@ Credit
 DEBIT
 CREDIT
 DATE
+Amount
+AMOUNT
