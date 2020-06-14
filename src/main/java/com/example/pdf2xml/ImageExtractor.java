@@ -29,6 +29,7 @@ public class ImageExtractor {
                 if (o instanceof PDImageXObject) {
                     PDImageXObject image = (PDImageXObject) o;
                     String filename =path+ "/extracted-image-" + i + ".png";
+                    System.out.println(filename);
                     ImageIO.write(image.getImage(), "png", new File(filename));
                     i++;
                 }

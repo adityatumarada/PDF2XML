@@ -66,14 +66,9 @@ public class Controller {
         DirectoryChooser chooser = new DirectoryChooser();
         chooser.setTitle("Open XML Folder");
         File selectedDirectory = chooser.showDialog(null);
-        int startIndex=pdfPath.lastIndexOf("\\");
-        int endIndex=pdfPath.lastIndexOf(".");
-        String xmlFileName=pdfPath.substring(startIndex,endIndex);
         folderPath=selectedDirectory.getAbsolutePath();
-        xmlPath=selectedDirectory.getAbsolutePath()+xmlFileName+".xml";
-        System.out.println(xmlPath);
-        xmlPath.replace("\\", "/");
-        XMLPath.setText(XMLPath.getText()+" "+xmlPath);
+        folderPath.replace("\\", "/");
+        XMLPath.setText(XMLPath.getText()+" "+folderPath);
     }
 
     //Converts pdf to xml
@@ -102,6 +97,8 @@ public class Controller {
             //converts tables to XML
             List<String> XMLtable = Table2XML.convertToXML(tableDetails);
 
+            String xmlPath = getXMLPath(pdfPath,folderPath);
+
             //use XMLtable and htmlObjectList for text2XML
             Text2XML.XMLGenerationCombined(htmlObjectList,xmlPath,XMLtable);
 
@@ -116,6 +113,13 @@ public class Controller {
         }
 
 
+    }
+
+    private String getXMLPath(String pdfPath,String folderPath) {
+        String[] path = pdfPath.split("/");
+        String pdfName = path[path.length-1];
+        String xmlPath = folderPath+"/"+pdfName.substring(0,pdfName.length()-5)+".xml";
+        return xmlPath;
     }
 
     //Removes table from data to be processed to give text
