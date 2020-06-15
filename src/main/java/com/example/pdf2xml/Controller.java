@@ -4,24 +4,20 @@ package com.example.pdf2xml;
  * Author : Jui, Aditya, Eshita
  */
 
-import java.awt.*;
-import java.io.File;
-import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
-
 import com.example.pdf2xml.models.Details;
 import com.example.pdf2xml.models.HTMLobject;
 import javafx.fxml.FXML;
-import javafx.scene.control.Button;
+import javafx.scene.control.Alert;
 import javafx.scene.control.Label;
 import javafx.stage.DirectoryChooser;
 import javafx.stage.FileChooser;
 import org.apache.pdfbox.pdmodel.PDDocument;
 
 import javax.xml.parsers.ParserConfigurationException;
-
-import static java.awt.Color.green;
+import java.io.File;
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 
 public class Controller {
     //Variables
