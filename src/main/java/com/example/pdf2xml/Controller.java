@@ -49,7 +49,7 @@ public class Controller {
     //Selects pdffile path using filechooser and stores it
     public void choosePDF() {
         FileChooser fileChooser=new FileChooser();
-        fileChooser.setTitle("Open PDF");
+        fileChooser.setTitle(Constant.OPENPDF);
         File file=fileChooser.showOpenDialog(null);
         pdfPath=file.getAbsolutePath();
         System.out.println(pdfPath);
@@ -60,7 +60,7 @@ public class Controller {
     // Selects folderpath using directorychooser and stores it
     public void chooseXML(){
         DirectoryChooser chooser = new DirectoryChooser();
-        chooser.setTitle("Open XML Folder");
+        chooser.setTitle(Constant.OPENXMLFOLDER);
         File selectedDirectory = chooser.showDialog(null);
         folderPath=selectedDirectory.getAbsolutePath();
         folderPath.replace("\\", "/");
@@ -78,6 +78,7 @@ public class Controller {
             alert.setWidth(50);
             alert.setHeight(50);
             alert.showAndWait();
+            Text2XML text2XML=new Text2XML();
             
             PDDocument pdf = PDDocument.load(new File(pdfPath));
 
@@ -104,7 +105,7 @@ public class Controller {
             String xmlPath = getXMLPath(pdfPath,folderPath);
 
             //use XMLtable and htmlObjectList for text2XML
-            Text2XML.XMLGenerationCombined(htmlObjectList,xmlPath,XMLtable);
+            text2XML.XMLGenerationCombined(htmlObjectList,xmlPath,XMLtable);
 
             //extracting images
             ImageExtractor.extractImages(pdf,folderPath);
@@ -120,9 +121,9 @@ public class Controller {
     }
 
     private String getXMLPath(String pdfPath,String folderPath) {
-        String[] path = pdfPath.split("/");
+        String[] path = pdfPath.split("/|\\\\");
         String pdfName = path[path.length-1];
-        String xmlPath = folderPath+"/"+pdfName.substring(0,pdfName.length()-5)+".xml";
+        String xmlPath = folderPath+"/"+pdfName.substring(0,pdfName.length()-4)+Constant.XMLFILEEXTENSION;
         return xmlPath;
     }
 

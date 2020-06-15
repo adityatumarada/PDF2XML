@@ -24,13 +24,13 @@ public class App extends Application {
     public void start(Stage stage) throws IOException {
         scene = new Scene(loadFXML(Constant.PRIMARY));
         stage.setScene(scene);
-        stage.setTitle("PDF to XML converter");
+        stage.setTitle(Constant.PDFTOXMLCONVERSION);
         stage.show();
     }
 
     //loads fxml file through resources
     private static Parent loadFXML(String fxml) throws IOException {
-        FXMLLoader fxmlLoader = new FXMLLoader(App.class.getResource(fxml + ".fxml"));
+        FXMLLoader fxmlLoader = new FXMLLoader(App.class.getResource(fxml + Constant.FXMLFILEEXTENSION));
         return fxmlLoader.load();
     }
 
