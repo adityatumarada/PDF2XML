@@ -1,7 +1,12 @@
-package com.example.pdf2xml.Models;
+package com.example.pdf2xml.models;
 
 
-/** Author: Eshita **/
+/**
+ * description
+ *
+ * @author: Eshita
+ *
+ **/
 public class Details {
     private int pageNo;
     private String[][] Tables;

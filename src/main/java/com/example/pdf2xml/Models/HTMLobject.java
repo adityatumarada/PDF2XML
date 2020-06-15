@@ -1,6 +1,6 @@
 //aditya
 
-package com.example.pdf2xml.Models;
+package com.example.pdf2xml.models;
 
 /** Author: Aditya **/
 public class HTMLobject {

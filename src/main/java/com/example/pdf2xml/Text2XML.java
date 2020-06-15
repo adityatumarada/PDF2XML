@@ -1,6 +1,6 @@
 package com.example.pdf2xml;
 
-import com.example.pdf2xml.Models.HTMLobject;
+import com.example.pdf2xml.models.HTMLobject;
 import org.w3c.dom.Attr;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;

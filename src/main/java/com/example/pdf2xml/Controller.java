@@ -1,7 +1,7 @@
 package com.example.pdf2xml;
 
 /**
- * Author : Jui, Aditya
+ * Author : Jui, Aditya, Eshita
  */
 
 import java.awt.*;
@@ -74,7 +74,15 @@ public class Controller {
     //Converts pdf to xml
     public void convert(){
         try {
+            
+            System.out.println("Converting...");
 
+            Alert alert = new Alert(Alert.AlertType.INFORMATION);
+            alert.setHeaderText("Please don't close the main window, this will take a while!");
+            alert.setWidth(50);
+            alert.setHeight(50);
+            alert.showAndWait();
+            
             PDDocument pdf = PDDocument.load(new File(pdfPath));
 
             //extracting tables from pdf
