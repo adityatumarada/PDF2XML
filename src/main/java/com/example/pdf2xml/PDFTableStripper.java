@@ -1,4 +1,4 @@
-package com.example.pdf2xml;// Created by Eshita Shukla
+package com.example.pdf2xml;
 
 import com.example.pdf2xml.models.Details;
 import org.apache.fontbox.util.BoundingBox;
@@ -19,7 +19,9 @@ import java.util.List;
 import java.util.*;
 
 
-// THIS IS THE MAIN CLASS
+/**
+ * Author : Jui, Aditya, Eshita
+ */
 
 public class PDFTableStripper extends PDFTextStripper
 {
@@ -76,9 +78,9 @@ public class PDFTableStripper extends PDFTextStripper
                 Rectangle2D[][] regions = stripper.extractTable(pdPage);
 
                 // Calculating the dimentions and geometrical positions of all the rows on each page
-                for(int r=0; r<stripper.getRows(); ++r) {
-                    for(int c=0; c<stripper.getColumns(); ++c) {
-                        Rectangle2D region = regions[c][r];
+                for(int row=0; row<stripper.getRows(); ++row) {
+                    for(int col=0; col<stripper.getColumns(); ++col) {
+                        Rectangle2D region = regions[col][row];
                         rowCoordinates[R] = region.getMinY();
                         rowHeights[R] = region.getHeight();
                         rowPage[R] = page;
