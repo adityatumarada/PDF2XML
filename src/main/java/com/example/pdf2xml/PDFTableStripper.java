@@ -1,6 +1,6 @@
 package com.example.pdf2xml;// Created by Eshita Shukla
 
-import com.example.pdf2xml.Models.Details;
+import com.example.pdf2xml.models.Details;
 import org.apache.fontbox.util.BoundingBox;
 import org.apache.pdfbox.pdmodel.PDDocument;
 import org.apache.pdfbox.pdmodel.PDPage;

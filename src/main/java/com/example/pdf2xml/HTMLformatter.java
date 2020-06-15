@@ -1,6 +1,6 @@
 package com.example.pdf2xml;
 
-import com.example.pdf2xml.Models.HTMLobject;
+import com.example.pdf2xml.models.HTMLobject;
 import org.apache.pdfbox.pdmodel.PDDocument;
 import org.fit.pdfdom.PDFDomTree;
 import org.jsoup.Jsoup;

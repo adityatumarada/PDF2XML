@@ -15,9 +15,14 @@ public class App extends Application {
 
     private static Scene scene;
 
+    /**
+     *
+     * @param stage
+     * @throws IOException
+     */
     @Override
     public void start(Stage stage) throws IOException {
-        scene = new Scene(loadFXML("primary"));
+        scene = new Scene(loadFXML(Constant.PRIMARY));
         stage.setScene(scene);
         stage.setTitle("PDF to XML converter");
         stage.show();

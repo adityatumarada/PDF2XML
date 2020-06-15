@@ -1,6 +1,6 @@
 package com.example.pdf2xml;
 
-import com.example.pdf2xml.Models.Details;
+import com.example.pdf2xml.models.Details;
 
 import java.util.ArrayList;
 import java.util.List;
