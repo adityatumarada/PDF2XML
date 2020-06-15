@@ -20,7 +20,7 @@ import java.util.*;
 
 
 /**
- * Author : Jui, Aditya, Eshita
+ * Author : Eshita
  */
 
 public class PDFTableStripper extends PDFTextStripper
