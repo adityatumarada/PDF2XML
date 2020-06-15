@@ -10,8 +10,8 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.example.pdf2xml.Models.Details;
-import com.example.pdf2xml.Models.HTMLobject;
+import com.example.pdf2xml.models.Details;
+import com.example.pdf2xml.models.HTMLobject;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
