@@ -1,7 +1,8 @@
 package com.example.pdf2xml;
 
 /**
- * Author : Jui, Aditya, Eshita
+ * This is controller class for fxml.It contains all the elements required in GUI.
+ * @author Jui, Aditya, Eshita
  */
 
 import com.example.pdf2xml.models.Details;
@@ -28,25 +29,39 @@ public class Controller {
     private Label PDFPath;
     @FXML
     private Label XMLPath;
-     //Used to choose pdf
+
+    /**
+     * Used to choose pdf
+     * @throws IOException
+     */
     @FXML
     public void handleChoosePDF() throws IOException{
-       choosePDF();
+        choosePDF();
     }
 
-    //Used to choose xml
+    /**
+     * Used to choose xml
+     * @throws IOException
+     */
     @FXML
-    private void handleChooseXML() throws IOException{
+    public void handleChooseXML() throws IOException{
         chooseXML();
     }
 
-    //Used for conversion for button convert
+    /**
+     * Used for conversion for button convert
+     * @throws IOException
+     */
     @FXML
-    private void handleConvert() throws IOException {
+    public void handleConvert() throws IOException {
         convert();
     }
 
-    //Selects pdffile path using filechooser and stores it
+
+
+    /**
+     * Selects pdf file path using <b> filechooser</b> and stores it
+     */
     public void choosePDF() {
         FileChooser fileChooser=new FileChooser();
         fileChooser.setTitle(Constant.OPENPDF);
@@ -57,7 +72,11 @@ public class Controller {
         PDFPath.setText(PDFPath.getText()+" "+pdfPath);
     }
 
-    // Selects folderpath using directorychooser and stores it
+    //
+
+    /**
+     * Selects output folderpath using <b>directorychooser</b> and stores it
+     */
     public void chooseXML(){
         DirectoryChooser chooser = new DirectoryChooser();
         chooser.setTitle(Constant.OPENXMLFOLDER);
@@ -67,20 +86,24 @@ public class Controller {
         XMLPath.setText(XMLPath.getText()+" "+folderPath);
     }
 
-    //Converts pdf to xml
+
+
+    /**
+     * Converts pdf to xml
+     */
     public void convert(){
         try {
-            
-            System.out.println("Converting...");
 
+            System.out.println(Constant.CONVERTING);
+            //Alert window to inform user to not to close window
             Alert alert = new Alert(Alert.AlertType.INFORMATION);
-            alert.setHeaderText("Please don't close the main window, this will take a while!");
+            alert.setHeaderText(Constant.ALERTWHILECONVERSION);
             alert.setWidth(50);
             alert.setHeight(50);
             alert.showAndWait();
 
             Text2XML text2XML=new Text2XML();
-            
+
             PDDocument pdf = PDDocument.load(new File(pdfPath));
 
             //extracting tables from pdf
@@ -103,6 +126,7 @@ public class Controller {
             //converts tables to XML
             List<String> XMLtable = Table2XML.convertToXML(tableDetails);
 
+            //generating xml file path using pdfpath and folderpath
             String xmlPath = getXMLPath(pdfPath,folderPath);
 
             //use XMLtable and htmlObjectList for text2XML
@@ -111,13 +135,13 @@ public class Controller {
             //extracting images
             ImageExtractor.extractImages(pdf,folderPath);
 
+            //Alert dialog which informs users about completion of task
             Alert alert2 = new Alert(Alert.AlertType.INFORMATION);
-            alert2.setHeaderText("The extraction is complete");
+            alert2.setHeaderText(Constant.COMPLETE);
             alert2.setWidth(50);
             alert2.setHeight(50);
             alert2.showAndWait();
 
-            //change status (Eshita add popup here)
 
         } catch (IOException | ParserConfigurationException e) {
             e.printStackTrace();
@@ -126,14 +150,27 @@ public class Controller {
 
     }
 
+    /**
+     * Takes pdfpath and folderpath and gives xmlpath
+     * @param pdfPath path of PDF to be converted
+     * @param folderPath path of output folder
+     * @return String
+     */
     private String getXMLPath(String pdfPath,String folderPath) {
+
         String[] path = pdfPath.split("/|\\\\");
         String pdfName = path[path.length-1];
-        String xmlPath = folderPath+"/"+pdfName.substring(0,pdfName.length()-4)+Constant.XMLFILEEXTENSION;
-        return xmlPath;
+        return folderPath+"/"+pdfName.substring(0,pdfName.length()-4)+Constant.XMLFILEEXTENSION;
     }
 
-    //Removes table from data to be processed to give text
+
+
+    /**
+     * Removes table from data to be processed to give text
+     * @param formattedHTMLList List of textdata with tables
+     * @param tableCoodinates coordinates of tables with pdfbox
+     * @return HTMLobjectlist
+     */
     private static List<HTMLobject> removeTable(List<HTMLobject> formattedHTMLList, double[] tableCoodinates) {
         List<HTMLobject> textList = new ArrayList<>();
 
@@ -146,7 +183,13 @@ public class Controller {
         return textList;
     }
 
-    //checks if data is present in table or not
+
+    /**
+     * checks if data is present in table or not
+     * @param htmLobject object of HTMLobject class
+     * @param coodinates   Coordinates taken from pdfbox
+     * @return   boolean
+     */
     private static boolean istable(HTMLobject htmLobject, double[] coodinates) {
 
         double top = htmLobject.getTop();

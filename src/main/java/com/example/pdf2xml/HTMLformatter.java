@@ -16,9 +16,16 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * Author: Aditya
+ * This class is used to extract and format text from pdf
+ * @author Aditya
  **/
 public class HTMLformatter {
+
+    /**
+     * formats htmlObject list by joining words present in same line
+     * @param htmlObjectList
+     * @return formatted list of htmlObject
+     */
     static List<HTMLobject> formatHTMLList(List<HTMLobject> htmlObjectList) {
         List<HTMLobject> formattedHTMLList = new ArrayList<>();
         if (htmlObjectList.size() == 0) {
@@ -26,26 +33,33 @@ public class HTMLformatter {
             System.exit(0);
         }
         formattedHTMLList.add(htmlObjectList.get(0));
-        for (int i = 1; i < htmlObjectList.size(); i++) {
+        for (int index = 1; index < htmlObjectList.size(); index++) {
             double prevTop = formattedHTMLList.get(formattedHTMLList.size() - 1).getTop();
-            double curTop = htmlObjectList.get(i).getTop();
-            String prevFont = formattedHTMLList.get(formattedHTMLList.size() - 1).getFont_family();
-            String curFont = htmlObjectList.get(i).getFont_family();
-            double prevFontSize = formattedHTMLList.get(formattedHTMLList.size() - 1).getFont_size();
-            double curFontSize = htmlObjectList.get(i).getFont_size();
-            String prevFontWeight = formattedHTMLList.get(formattedHTMLList.size() - 1).getFont_weight();
-            String curFontWeight = htmlObjectList.get(i).getFont_weight();
+            double curTop = htmlObjectList.get(index).getTop();
+            String prevFont = formattedHTMLList.get(formattedHTMLList.size() - 1).getFontFamily();
+            String curFont = htmlObjectList.get(index).getFontFamily();
+            double prevFontSize = formattedHTMLList.get(formattedHTMLList.size() - 1).getFontSize();
+            double curFontSize = htmlObjectList.get(index).getFontSize();
+            String prevFontWeight = formattedHTMLList.get(formattedHTMLList.size() - 1).getFontWeight();
+            String curFontWeight = htmlObjectList.get(index).getFontWeight();
             if (prevTop == curTop && curFont.equals(prevFont) && prevFontSize == curFontSize && prevFontWeight.equals(curFontWeight)) {
                 HTMLobject object = formattedHTMLList.get(formattedHTMLList.size() - 1);
-                object.setWidth(object.getWidth() + htmlObjectList.get(i).getWidth());
-                object.setValue(object.getValue() + " " + htmlObjectList.get(i).getValue());
+                object.setWidth(object.getWidth() + htmlObjectList.get(index).getWidth());
+                object.setValue(object.getValue() + " " + htmlObjectList.get(index).getValue());
             } else
-                formattedHTMLList.add(htmlObjectList.get(i));
+                formattedHTMLList.add(htmlObjectList.get(index));
 
         }
         return formattedHTMLList;
     }
 
+    /**
+     * Converts pdf document to HTML string
+     * @param pdf
+     * @return HTML string of input PDF
+     * @throws IOException
+     * @throws ParserConfigurationException
+     */
     public static String generateHTMLFromPDF(PDDocument pdf) throws IOException, ParserConfigurationException {
         Writer output = new StringWriter();
         new PDFDomTree().writeText(pdf, output);
@@ -54,7 +68,11 @@ public class HTMLformatter {
 
     }
 
-
+    /**
+     * Extracts text from htmlString and converts to list of htmlobject
+     * @param htmlString
+     * @return page wise list of HTMLobjects
+     */
     public static ArrayList<List<HTMLobject>> parseHTML(String htmlString) {
         Document doc = Jsoup.parse(htmlString);
         Elements pages= doc.getElementsByClass("page");
@@ -75,6 +93,11 @@ public class HTMLformatter {
         return pageElement;
     }
 
+    /**
+     * Converts html element to html object by extracting style attributes and text
+     * @param element
+     * @return htmlobject
+     */
     public static HTMLobject htmlObjectCoverter(Element element) {
         HTMLobject object = new HTMLobject(0, 0, " ", 0, " ", " ", " ", 0);
         object.setValue(element.text());
@@ -88,11 +111,11 @@ public class HTMLformatter {
             } else if (arr[0].equals("left")) {
                 object.setLeft(Double.parseDouble(arr[1].substring(0, arr[1].length() - 2)));
             } else if (arr[0].equals("font-family")) {
-                object.setFont_family(arr[1]);
+                object.setFontFamily(arr[1]);
             } else if (arr[0].equals("font-size")) {
-                object.setFont_size(Double.parseDouble(arr[1].substring(0, arr[1].length() - 2)));
+                object.setFontSize(Double.parseDouble(arr[1].substring(0, arr[1].length() - 2)));
             } else if (arr[0].equals("font-weight")) {
-                object.setFont_weight(arr[1]);
+                object.setFontWeight(arr[1]);
             } else if (arr[0].equals("color")) {
                 object.setColor(arr[1]);
             } else if (arr[0].equals("width")) {

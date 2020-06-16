@@ -133,7 +133,7 @@ public class Text2XML {
             } else {
                 int flag = 0;
                 if (textList.get(index).getTop() == textList.get(index - 1).getTop()) {
-                    if (textList.get(index).getFont_weight().equals(Constant.BOLD)) {
+                    if (textList.get(index).getFontWeight().equals(Constant.BOLD)) {
                         if (Math.abs(textList.get(index).getLeft() - textList.get(index - 1).getLeft()) < 10) {
                             HTMLobject object = shrinkedList.get(shrinkedList.size() - 1);
                             object.setValue(object.getValue() + " " + textList.get(index).getValue());
@@ -179,7 +179,7 @@ public class Text2XML {
             if (processedElement.get(index) == -1) {
                 if (shrinkedList.get(index).getTop() == shrinkedList.get(index + 1).getTop()) {
 
-                    if (shrinkedList.get(index).getFont_weight().equals(Constant.BOLD)) {
+                    if (shrinkedList.get(index).getFontWeight().equals(Constant.BOLD)) {
                         headings.add(shrinkedList.get(index).getValue());
                         textData.add(shrinkedList.get(index + 1).getValue());
                         processedElement.set(index, 1);
@@ -193,7 +193,7 @@ public class Text2XML {
                 } else if (Math.abs(shrinkedList.get(index).getTop() - shrinkedList.get(index + 1).getTop()) >= lineSpace + 1
                         && Math.abs(shrinkedList.get(index).getTop() - shrinkedList.get(index + 1).getTop()) < lineSpace + 2) {
 
-                    if (shrinkedList.get(index).getFont_weight().equals(shrinkedList.get(index + 1).getFont_weight())) {
+                    if (shrinkedList.get(index).getFontWeight().equals(shrinkedList.get(index + 1).getFontWeight())) {
                         headings.add(shrinkedList.get(index).getValue());
                         textData.add(shrinkedList.get(index + 1).getValue());
                         processedElement.set(index, 1);
@@ -212,7 +212,7 @@ public class Text2XML {
 
                 } else if (Math.abs(shrinkedList.get(index).getTop() - shrinkedList.get(index + 1).getTop()) < lineSpace + 1) {
 
-                    if (shrinkedList.get(index).getFont_weight().equals(Constant.BOLD)) {
+                    if (shrinkedList.get(index).getFontWeight().equals(Constant.BOLD)) {
                         headings.add(shrinkedList.get(index).getValue());
                         textData.add(shrinkedList.get(index + 1).getValue());
                         processedElement.set(index, 1);
@@ -367,8 +367,8 @@ public class Text2XML {
      * @return boolean
      */
     public boolean checkFont(HTMLobject element1, HTMLobject element2) {
-        if (element1.getColor().equals(element2.getColor()) & element1.getFont_family().equals(element2.getFont_family())
-                & element1.getFont_weight() == element2.getFont_weight()) {
+        if (element1.getColor().equals(element2.getColor()) & element1.getFontFamily().equals(element2.getFontFamily())
+                & element1.getFontWeight() == element2.getFontWeight()) {
             return true;
         }
         return false;
