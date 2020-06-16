@@ -26,6 +26,13 @@ import java.util.*;
 public class PDFTableStripper extends PDFTextStripper
 {
 
+    /**
+     * Returns an Array of the Details objects
+     * Each element (Details object) contains a table with its coordinates and the page-number that it is present on
+     * @param document
+     * @return
+     * @throws IOException
+     */
     public static Details[] getDetails(PDDocument document) throws IOException {
 
         // Some helper variables are declared
@@ -33,16 +40,16 @@ public class PDFTableStripper extends PDFTextStripper
         double[] rowHeights;
         int[] rowPage;
 
-        // PDF units are at 72 DPI
-        // This number changes with the quality of the pdf
+        /**
+        * PDF units are at 72 DPI
+        * This number changes with the quality of the pdf
+        */
         final double res = 72;
 
         String configFileName="cofigFile.txt";
 
         PDFTableStripper stripper = new PDFTableStripper();
         stripper.setSortByPosition(true);
-//        System.out.println(new File("../some/relative/path").getCanonicalPath());
-
 
             // ****************** PART 1 ******************************************************
             // Extract TEXT data from each page on the pdf
@@ -91,6 +98,7 @@ public class PDFTableStripper extends PDFTextStripper
 
             // Stripping the entire document into rows
             int r = 0;
+            int row = 0;
             double[][][] rowCooordHeight = new double[rowCoordinates.length][15][2];
             String[][] rowColumnWiseContent = new String[rowCoordinates.length][15];
             for (int i = 0; i< rowCoordinates.length; i++){
@@ -107,16 +115,15 @@ public class PDFTableStripper extends PDFTextStripper
                 Rectangle2D[][] regions = stripper.extractTable(pdPage);
 
                 // Iterating through all columns of the row (only one row in each area)
-                for(int c=0; c<stripper.getColumns(); ++c) {
-                    Rectangle2D region = regions[c][r];
+                for(int col=0; col<stripper.getColumns(); ++col) {
+                    Rectangle2D region = regions[col][row];
                     rowCoordinates[r] = region.getMinY();
-                    String text = stripper.getText(r, c);
-                    rowColumnWiseContent[i][c] = text;
-                    rowCooordHeight[i][c][0] = region.getMinX();
-                    rowCooordHeight[i][c][1] = region.getMaxX();
+                    String text = stripper.getText(row, col);
+                    rowColumnWiseContent[i][col] = text;
+                    rowCooordHeight[i][col][0] = region.getMinX();
+                    rowCooordHeight[i][col][1] = region.getMaxX();
                 }
             }
-
 
 
             // ****************** PART 2 ******************************************************
@@ -126,10 +133,10 @@ public class PDFTableStripper extends PDFTextStripper
 
             // Calculating the actual highest number of columns of all the rows
             int highestActualNumOfCol = 0;
-            for (int i = 0; i<rowCoordinates.length; i++){
+            for (int rowIndex = 0; rowIndex<rowCoordinates.length; rowIndex++){
                 int actualNumOfCol = 0;
-                for (int c = 0; c<10; c++){
-                    if (rowColumnWiseContent[i][c] != null){
+                for (int colIndex = 0; colIndex<10; colIndex++){
+                    if (rowColumnWiseContent[rowIndex][colIndex] != null){
                         actualNumOfCol = actualNumOfCol +1;
                     }
                 }
@@ -139,33 +146,33 @@ public class PDFTableStripper extends PDFTextStripper
             }
 
 
-
             // ****************** PART 3 ******************************************************
             // This part is only for the new algorithm
             // Calculating the partitions of all rows
+
 
             // Throughout a column, X is same
             // Array to save the coordinate where each columnis separated from the next
             double[][] rowPartitions = new double[rowCoordinates.length][highestActualNumOfCol+1];
             double[][] rowPartitions_2 = new double[rowCoordinates.length][highestActualNumOfCol+1];
-            for (int i = 0; i<rowCoordinates.length; i++){
-                for (int j=0; j<highestActualNumOfCol; j++){
+            for (int rowIndex = 0; rowIndex<rowCoordinates.length; rowIndex++){
+                for (int colIndex=0; colIndex<highestActualNumOfCol; colIndex++){
 
-                    double x1 = rowCooordHeight[i][j][0];
-                    double x2 = rowCooordHeight[i][j][1];
+                    double x1 = rowCooordHeight[rowIndex][colIndex][0];
+                    double x2 = rowCooordHeight[rowIndex][colIndex][1];
                     boolean found1 = false;
                     boolean found2 = false;
 
                     int firstNullElem = 0;
                     for (int k=0; k<highestActualNumOfCol;k++){
-                        if (rowPartitions[i][k] == 0.0){
+                        if (rowPartitions[rowIndex][k] == 0.0){
                             firstNullElem = k;
                             break;
                         }
-                        if (rowPartitions[i][k] == x1){
+                        if (rowPartitions[rowIndex][k] == x1){
                             found1 = true;
                         }
-                        if (rowPartitions[i][k] == x2){
+                        if (rowPartitions[rowIndex][k] == x2){
                             found2 = true;
                         }
                         if (found1 && found2){
@@ -173,7 +180,7 @@ public class PDFTableStripper extends PDFTextStripper
                         }
                     }
                     if (!found1 && x1!=0.0){
-                        rowPartitions[i][firstNullElem] = x1;
+                        rowPartitions[rowIndex][firstNullElem] = x1;
                         firstNullElem = firstNullElem + 1;
                     }
                 }
@@ -210,33 +217,8 @@ public class PDFTableStripper extends PDFTextStripper
                 }
             }
 
-//          This commented code is for debugging purposes only
-
-//            System.out.println("^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^");
-//            for (int i = 0; i<rowCoordinates.length; i++) {
-//                System.out.println("Row: " + i);
-//                for (int j = 0; j < highestActualNumOfCol; j++) {
-//                    System.out.println(rowPartitions[i][j]);
-//                }
-//            }
-
-//            // This commented snippet is only for debugging purposes
-//
-//            int[][] table0= new int[headingFoundStartPointer][rowCoordinates.length];
-//            for (int i = 0; i<headingFoundStartPointer; i++){
-//                for (int j =rowsWithHeadingsStart[i]; j<=rowsWithHeadingsEnd[i]; j++){
-//                    String S = "";
-//                    for (int k=0; k<highestActualNumOfCol; k++){
-//                        if (rowColumnWiseContent[j][k] !=null){
-//                            S = S+rowColumnWiseContent[j][k];
-//                        }
-//                    }
-//                    table0[i][j-rowsWithHeadingsStart[i]] = j;
-//                }
-//            }
-//            System.out.println("%%%%%%%%%%%%%%%%%%%%%%");
-
             int b;
+
 
             // ****************** PART 4 ******************************************************
             // Finding the "Heading" rows (only start), using "points-based-system"
@@ -282,26 +264,6 @@ public class PDFTableStripper extends PDFTextStripper
                         if (Content.contains("Sr.") || Content.contains("Sl.")) {
                             headingPointsForEachRow[i] += 1;
                         }
-//                        if (Content.contains("Description") || Content.contains("DESCRIPTION") || Content.contains("description")) {
-//                            headingPointsForEachRow[i] += 1;
-//                        }
-//                        if (Content.contains("Amount") || Content.contains("AMOUNT") || Content.contains("amount")) {
-//                            headingPointsForEachRow[i] += 1;
-//                        }
-//                        if (Content.contains("Withdrawal")) {
-//                            headingPointsForEachRow[i] += 1;
-//                        }
-//                        if (Content.contains("Deposit")) {
-//                            headingPointsForEachRow[i] += 1;
-//                        }
-//                        if (Content.contains(" No.")) {
-//                            headingPointsForEachRow[i] += 1;
-//                        }
-//                        // Special symbols like the "rupees-symbol" when converted to string look like --> "`"
-//                        if (Content.contains("`")) {
-//                            headingPointsForEachRow[i] += 1;
-////                            System.out.println("^^^^^^^^^^^" + Content);
-//                        }
 
                     }
                 }
@@ -343,7 +305,6 @@ public class PDFTableStripper extends PDFTextStripper
 
                     r=0;
                     int j = i+1;
-//                    System.out.println(j);
 
                     // Used for table coordinates in the "Details" object
                     double minY = rowPartitions[i][0];
@@ -426,25 +387,11 @@ public class PDFTableStripper extends PDFTextStripper
                                 for (int q=0; q<highestActualNumOfCol;q++){
                                     int currentIndex = q;
                                     double diff = rowCooordHeight[j][p][0]-rowCooordHeight[i][currentIndex][1];
-//                                    System.out.println("@@@" + currentIndex + " " +nearestIndex + " " + rowColumnWiseContent[i][p]);
-//                                    System.out.println(diff + " " + minDiff + " " + rowColumnWiseContent[i][p].charAt(0) + rowColumnWiseContent[i][p].charAt(1) + " " + rowColumnWiseContent[j][p]);
-
 
 
                                     if (minDiff<0){
                                         break;
                                     }
-//                                    if (diff<-50 ){
-////                                        if (p != 0){
-////                                            if (nearestIndex!=nearestColumnForLeftAligned[p-1]){
-////                                                break;
-////                                            }
-////                                        }
-////                                        else{
-////                                            break;
-////                                        }
-//                                        break;
-//                                    }
                                     else if (diff<minDiff){
                                         nearestIndex=currentIndex;
                                         nearestColumnForLeftAligned[p] = nearestIndex;
@@ -460,7 +407,6 @@ public class PDFTableStripper extends PDFTextStripper
                                 catch (Exception e){}
 
 //                                System.out.println(p + "^^^^^^^^^" + nearestColumnForLeftAligned[p] + "^^^^^^^^^");//+ rowColumnWiseContent[j][p] + "______________________\n");
-
                                 if (Tables_temp[r+1][nearestColumnForLeftAligned[p]]==null){
                                     Tables_temp[r+1][nearestColumnForLeftAligned[p]] = rowColumnWiseContent[j][p];
 
@@ -493,12 +439,8 @@ public class PDFTableStripper extends PDFTextStripper
                         }
                     }
 
-
-
                     // Adding table to the "Details" object
                     arrayOfDetails[detailsPointer].setTables(Tables);
-
-                    // Exchange this part
 
                     // Adding coordinates to the "Details" object
                     double x1,x2,y1,y2;
@@ -509,41 +451,6 @@ public class PDFTableStripper extends PDFTextStripper
                     arrayOfDetails[detailsPointer].setTableAllPoints(new double[]{x1, x2, y1, y2});
 
                     stripper.setRegion(new Rectangle((int) Math.round(0.0*res), (int) Math.round(x1), (int) Math.round(9*res), (int) Math.round((x2-x1))));
-
-//                    // Calculating the total number of rows (all pages)
-////                    int totalNoOfRows = 0;
-////                    for (int page = 0; page < document.getNumberOfPages(); ++page) {
-////                        // Initialising page
-////                        PDPage pdPage = document.getPage(page);
-////                        // Extracting table (not accurate) - only done for the purpose of conuting rows
-////                        Rectangle2D[][] regions = stripper.extractTable(pdPage);
-////                        int R = stripper.getRows();
-////                        totalNoOfRows +=R;
-////                    }
-//
-//                    // Arrays to keep track of Y coordinates, heights, and page numbers
-//                    rowCoordinates = new double[totalNoOfRows];
-//                    rowHeights = new double[totalNoOfRows];
-//                    rowPage = new int[totalNoOfRows];
-
-                    // Extract data from each page on the pdf
-//                    int R = 0;
-//                    for (int page = 0; page < document.getNumberOfPages(); ++page) {
-/*
-                    // Initialising page
-                    int page = arrayOfDetails[detailsPointer].getPageNo();
-                    PDPage pdPage = document.getPage(page);
-                    Rectangle2D[][] regions = stripper.extractTable(pdPage);
-                    String[][] TablesFinal = new String[stripper.getRows()][stripper.getColumns()];
-                    System.out.println("NNNNNNNNNNNNN "+stripper.getRows() + " " + stripper.getColumns());
-                    // Calculating the dimentions and geometrical positions of all the rows on each page
-                    for(r=0; r<stripper.getRows(); ++r) {
-                        for(int c=0; c<stripper.getColumns(); ++c) {
-                            Rectangle2D region = regions[c][r];
-                        }
-                    }
-*/
-
 
                     detailsPointer++;
                     i = j;
