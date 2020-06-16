@@ -78,6 +78,7 @@ public class Controller {
             alert.setWidth(50);
             alert.setHeight(50);
             alert.showAndWait();
+
             Text2XML text2XML=new Text2XML();
             
             PDDocument pdf = PDDocument.load(new File(pdfPath));
@@ -110,6 +111,11 @@ public class Controller {
             //extracting images
             ImageExtractor.extractImages(pdf,folderPath);
 
+            Alert alert2 = new Alert(Alert.AlertType.INFORMATION);
+            alert2.setHeaderText("The extraction is complete");
+            alert2.setWidth(50);
+            alert2.setHeight(50);
+            alert2.showAndWait();
 
             //change status (Eshita add popup here)
 
