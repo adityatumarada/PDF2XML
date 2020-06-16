@@ -22,4 +22,5 @@ public class Constant {
     static final String CONVERTING="Converting...";
     static final String ALERTWHILECONVERSION="Please don't close the main window, this will take a while!";
     static final String COMPLETE="The extraction is complete";
+    static final String DOCUMENT="document";
 }
