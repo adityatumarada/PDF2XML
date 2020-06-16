@@ -24,10 +24,27 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * Author-Jui
- **/
+*<h2>XML Conversion</h2>
+ * This class is used for processing of text which we got
+ * by HTML Conversion and then a complete XML transformation
+ * <p>
+ * <b>Flow:</b>
+ * <p>
+ *     <ul>
+ *         <li>Initially we will check the vertical distance between consecutive elements and we will find out maximum occuring element as linespace.
+ *         <li>Using linespacing and text styles we will make blocks of text elements so that we can make the document more structured for each page while iterating through each page.
+ *         <li>Using the linespacing and text styles we will be classifying the elements as key and value pairs for each page.
+ *         <li>The key value pairs will be given to DOM parser and document will be formed.
+ *         <li>Convert the Document to string and append table XMLstring to it.This will be done for each page and each page's xml string will be appended.
+ *         <li>Convert the complete string to Document and then transform to XML
+ *     </ul><p>
+ *
+ * 
+ * @author Jui
+ *
+ */
 
-class Text2XML {
+public class Text2XML {
     //variables
     private static List<String> headings;
     private static List<String> textData ;
@@ -37,7 +54,9 @@ class Text2XML {
     private static String XMLString;
     private static Integer totalPages;
 
-    //constructor
+    /**
+     * Constructor
+     */
     public Text2XML(){
         headings = new ArrayList<>();
         textData = new ArrayList<>();
@@ -48,8 +67,16 @@ class Text2XML {
         totalPages = 0;
 
     }
-    //determines line spacing between lines
-    //Taking differences between two values of top and ignoring 0
+
+    /**
+     * Determines line spacing
+     * <p>
+     * <b>Algorithm:</b>Get absolute difference between consecutive elements.Store count of these differences.
+     * Ignore 0.0 distance and find maximum from remaining differences and return it as linespacing.
+     *
+     * @param textList htmlobject list containing text pagewise
+     * @return Double
+     */
     public Double determineLineSpacing(List<HTMLobject> textList) {
         for (int index = 1; index < textList.size(); index++) {
             Double currLineSpacing = Math.abs(Double.valueOf(Math.round(((textList.get(index).getTop() - textList.get(index - 1).getTop()) * 100.00) / 100.00)));
@@ -68,18 +95,28 @@ class Text2XML {
         return determinedLineSpace;
     }
 
-    //Join the respective blocks using font style and linespacing
+
+
+    /**
+     * Join the respective blocks using font style and linespacing
+     * <p>
+     *     <b>Algorithm:</b>Check whether appendable or not,if appendable check fonts if same add to one block(curr emlements top should be greater than
+     *     previous elements top for this.
+     *     If same vertical coordinate then if curr element is normal weighted and previous is bold then consider as different elements else append
+     *
+     *
+     *
+     * @param textList htmlobject listcontaining text pagewise
+     * @return List of HTMLobjects
+     */
     public List<HTMLobject> joinHTMLObjectList(List<HTMLobject> textList) {
 
         List<HTMLobject> shrinkedList = new ArrayList<>();
         shrinkedList.add(textList.get(0));
         for (int index = 1; index < textList.size(); index++) {
-            /*checking some font parameters &
-             distance between two lines
-             & check appendable or not and creating blocks of similar parts in pdf*/
 
             boolean appendable = checkDistanceBetween(textList.get(index - 1), textList.get(index));
-            boolean isFontequal = check_Font(textList.get(index - 1), textList.get(index));
+            boolean isFontequal = checkFont(textList.get(index - 1), textList.get(index));
             if (appendable) {
                 if (textList.get(index).getTop() > textList.get(index - 1).getTop()) {
                     if (isFontequal) {
@@ -114,7 +151,22 @@ class Text2XML {
         return shrinkedList;
     }
 
-    //Creation of key value pair
+
+
+    /**
+     * Creates key value pair
+     * <p>
+     * <b>Logic behind key value pair generation:</b> If the element is not visited then process it as follows:
+     * If current element and next element are having same y coordinates and current element is bold then it will result into key value pair.
+     * Else if line spacing between current and next element is between linespace+1 and linespace+2
+     *                  if font is same then -----key value
+     *                  else key will be text-entry.
+     *Else if line spacing is greater than linespace+2then key will be text-entry.
+     *If line spacing is less than linespace+1 then ------key value.
+     *If last element is not visited then append it to textData and append text-entry to heading.
+     *
+     * @param shrinkedList htmlobject list that contains element blocks in document( Related elements together)
+     */
     public void getKeyValuePairs(List<HTMLobject> shrinkedList) {
 
         //Initialization of array for keeping track of visited elements
@@ -122,16 +174,7 @@ class Text2XML {
         for (int index = 0; index < shrinkedList.size(); index++) {
             processedElement.add(-1);
         }
-        /*
-        Logic behind key value pair generation:
-         If the element is not visited then process it as follows:
-         1. If current element and next element are having same y coordinates & current element is bold then it will result into key value pair.
-         2. Else if line spacing between current and next element is between linespace+1 and linespace+2
-                 if font is same then -----key value
-                 else key will be text-entry
-         3. Else if line spacing is greater than linespace+2then key will be text-entry
-         4.If line spacing is less than linespace+1 then ------key value
-         */
+
         for (int index = 0; index < shrinkedList.size() - 1; index++) {
             if (processedElement.get(index) == -1) {
                 if (shrinkedList.get(index).getTop() == shrinkedList.get(index + 1).getTop()) {
@@ -194,12 +237,23 @@ class Text2XML {
 
     }
 
-    //Generates XML file & stores it at xmlFilePath location
-  /*checks the page index
-  If it is non zero then remove xml declaration
-  else change > symbol with <page- pageno.>
-   */
-    public void XMLGenerator(String xmlFilePath, String tableString, int Index) {
+
+
+    /**
+     * Generates XML file and stores it at xmlFilePath location
+     *
+     * <p>
+     *     <b>Algorithm:</b>Using headings and textdata we will be inserting elements in dom Document using dom parser.
+     *     We will be checking for index, if it is zero then xml declaration will be retained or else removed.
+     *     Added some required tags and made a string of it and added tables to it .
+     *     So for every page xml +table string will be there and that will be appended to final xmlstring pagewise.If the page is last page then it
+     *     will be transformed to xml.
+     *
+     * @param xmlFilePath filepath for xml
+     * @param tableString xml string of table on the page
+     * @param pageIndex  index of current page which is being processed
+     */
+    public void XMLGenerator(String xmlFilePath, String tableString, int pageIndex) {
         //Enables  to obtain DOM parser
         DocumentBuilderFactory documentFactory = DocumentBuilderFactory.newInstance();
         //For obtaining document from XML
@@ -231,19 +285,19 @@ class Text2XML {
         }
         //transform DOM Document to string
         String doc = null;
-        if (Index == 0) {
-            doc = convertDocumentToString(document).replaceFirst(">", "><page-" + (Index + 1) + ">") + tableString + "</page-" + (Index + 1) + ">";
+        if (pageIndex == 0) {
+            doc = convertDocumentToString(document).replaceFirst(">", "><page-" + (pageIndex + 1) + ">") + tableString + "</page-" + (pageIndex + 1) + ">";
 
         } else {
             doc = convertDocumentToString(document);
             int stripIndex = doc.indexOf(">");
             String multiPage = doc.substring(0, stripIndex + 1);
-            doc = convertDocumentToString(document).replace(multiPage, "<page-" + (Index + 1) + ">") + tableString + "</page-" + (Index + 1) + ">";
+            doc = convertDocumentToString(document).replace(multiPage, "<page-" + (pageIndex + 1) + ">") + tableString + "</page-" + (pageIndex + 1) + ">";
 
         }
         //merging strings pagewise
         XMLString = XMLString + doc;
-        if (Index == totalPages) {
+        if (pageIndex == totalPages) {
             String XMLDocument = "";
             XMLDocument = XMLString.replaceFirst(">", "><document>");
             XMLString = XMLDocument + "</document>";
@@ -269,9 +323,21 @@ class Text2XML {
     }
 
 
-    //main function which will call all the required functions & will be called in main
-    //Iterate through all the pages
-    //Create xml pagewise and append together
+
+    /**
+     * main function which will call all the required functions and will be called in main
+     *
+     * <p>
+     * <b>Algorithm:</b>If no of table strings is less no of pages we will add empty tablestrings.
+     * We will iterate through each page. We will determine linespacing, join the blocks and create key value pairs and
+     * will be using XMLGenerator function for XML Creation
+     * <p>
+     *<b> Note:</b>clearing headings,textData and processedElement in each iteration is very important step otherwise the pages will be having duplications.
+     *
+     * @param htmlObjectList pagewise list of text elements
+     * @param XMLPath  path of xml file
+     * @param XMLTable  pagewise xml string list of tables
+     */
     public void XMLGenerationCombined(ArrayList<List<HTMLobject>> htmlObjectList, String XMLPath, List<String> XMLTable) {
         totalPages = htmlObjectList.size() - 1;
         if (htmlObjectList.size() - XMLTable.size() > 0) {
@@ -291,8 +357,16 @@ class Text2XML {
     }
 
 
-    //This method checks the color, fontfamily, fontweight of Elements
-    public boolean check_Font(HTMLobject element1, HTMLobject element2) {
+
+
+    /**
+     * This method checks the color, fontfamily, fontweight of Elements. If same return true (equal font) else false (unequal font)
+     *
+     * @param element1 HTMLobject
+     * @param element2 HTMLobject
+     * @return boolean
+     */
+    public boolean checkFont(HTMLobject element1, HTMLobject element2) {
         if (element1.getColor().equals(element2.getColor()) & element1.getFont_family().equals(element2.getFont_family())
                 & element1.getFont_weight() == element2.getFont_weight()) {
             return true;
@@ -301,7 +375,17 @@ class Text2XML {
     }
 
 
-    //This method checks the distance between two elements: if less distance returns false else true
+
+
+    /**
+     * This method checks the distance between two elements: if less distance returns false else true
+     * <p>
+     *     <b>Algorithm:</b> find the vertical distance between two elements and check whether it is greater than linespace +9 or
+     *     having same vertical coordinates. If yes, then return false(not appendable) else return true(appendable)
+     * @param element1  HTMLobject
+     * @param element2  HTMLobject
+     * @return boolean
+     */
     public boolean checkDistanceBetween(HTMLobject element1, HTMLobject element2) {
         if (Math.abs(Math.round(((element1.getTop() - element2.getTop()) * 100.00) / 100.00)) > lineSpace + 9 || element1.getTop() == element2.getTop()) {
             return false;
@@ -310,7 +394,14 @@ class Text2XML {
     }
 
 
-    //This method converts DOM Document to string
+
+
+    /**
+     * This method converts DOM Document to string
+     *
+     * @param doc  DOM document
+     * @return String
+     */
     private String convertDocumentToString(Document doc) {
         TransformerFactory tf = TransformerFactory.newInstance();
         Transformer transformer;
@@ -329,7 +420,14 @@ class Text2XML {
         return null;
     }
 
-    //This method converts string to DOM document
+
+
+    /**
+     * This method converts string to DOM document
+     *
+     * @param xmlStr
+     * @return Document
+     */
     private Document convertStringToDocument(String xmlStr) {
         DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
         DocumentBuilder builder;
