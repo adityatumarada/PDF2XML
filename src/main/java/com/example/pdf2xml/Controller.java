@@ -127,10 +127,10 @@ public class Controller {
     }
 
     private String getXMLPath(String pdfPath,String folderPath) {
+
         String[] path = pdfPath.split("/|\\\\");
         String pdfName = path[path.length-1];
-        String xmlPath = folderPath+"/"+pdfName.substring(0,pdfName.length()-4)+Constant.XMLFILEEXTENSION;
-        return xmlPath;
+        return folderPath+"/"+pdfName.substring(0,pdfName.length()-4)+Constant.XMLFILEEXTENSION;
     }
 
     //Removes table from data to be processed to give text

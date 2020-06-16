@@ -16,7 +16,7 @@ public class Table2XML {
 
         int totalPages = details[details.length - 1].getPageNo();
         List<String> tableXML = new ArrayList<>();
-        for (int i = 0; i <= totalPages; i++) {
+        for (int index = 0; index <= totalPages; index++) {
             tableXML.add("");
         }
         int tableID = 1;
