@@ -1,8 +1,9 @@
-//aditya
 
 package com.example.pdf2xml.models;
 
-/** Author: Aditya **/
+/**
+ * @author Aditya
+ */
 public class HTMLobject {
     private double top;
     private double left;

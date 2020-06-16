@@ -13,11 +13,17 @@ import java.io.File;
 import java.io.IOException;
 
 /**
+ *  This class is used to extract images from pdf
  * Author: Aditya
  **/
 public class ImageExtractor {
 
-    // function extracts images from the pdf.
+    /**
+     * Extracts images from pdf
+     * @param document
+     * @param path
+     * @throws IOException
+     */
     public static void extractImages(PDDocument document,String path) throws IOException {
 
         PDPageTree list = document.getPages();

@@ -16,9 +16,16 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * Author: Aditya
+ * This class is used to extract and format text from pdf
+ * @author Aditya
  **/
 public class HTMLformatter {
+
+    /**
+     * formats htmlObject list by joining words present in same line
+     * @param htmlObjectList
+     * @return formatted list of htmlObject
+     */
     static List<HTMLobject> formatHTMLList(List<HTMLobject> htmlObjectList) {
         List<HTMLobject> formattedHTMLList = new ArrayList<>();
         if (htmlObjectList.size() == 0) {
@@ -46,6 +53,13 @@ public class HTMLformatter {
         return formattedHTMLList;
     }
 
+    /**
+     * Converts pdf document to HTML string
+     * @param pdf
+     * @return HTML string of input PDF
+     * @throws IOException
+     * @throws ParserConfigurationException
+     */
     public static String generateHTMLFromPDF(PDDocument pdf) throws IOException, ParserConfigurationException {
         Writer output = new StringWriter();
         new PDFDomTree().writeText(pdf, output);
@@ -54,7 +68,11 @@ public class HTMLformatter {
 
     }
 
-
+    /**
+     * Extracts text from htmlString and converts to list of htmlobject
+     * @param htmlString
+     * @return page wise list of HTMLobjects
+     */
     public static ArrayList<List<HTMLobject>> parseHTML(String htmlString) {
         Document doc = Jsoup.parse(htmlString);
         Elements pages= doc.getElementsByClass("page");
@@ -75,6 +93,11 @@ public class HTMLformatter {
         return pageElement;
     }
 
+    /**
+     * Converts html element to html object by extracting style attributes and text
+     * @param element
+     * @return htmlobject
+     */
     public static HTMLobject htmlObjectCoverter(Element element) {
         HTMLobject object = new HTMLobject(0, 0, " ", 0, " ", " ", " ", 0);
         object.setValue(element.text());

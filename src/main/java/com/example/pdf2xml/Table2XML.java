@@ -5,9 +5,17 @@ import com.example.pdf2xml.models.Details;
 import java.util.ArrayList;
 import java.util.List;
 
-/* Author: Aditya */
+/**
+ * This class is used to convert table to XML
+ * @author Aditya
+ */
 public class Table2XML {
 
+    /**
+     * Converts tables to xml string
+     * @param details
+     * @return list of xml string for each table
+     */
     public static List<String> convertToXML(Details[] details) {
 
         if (details.length == 0) {
@@ -32,22 +40,28 @@ public class Table2XML {
         return tableXML;
     }
 
+    /**
+     * converts 2d array to XML
+     * @param table
+     * @param table_id
+     * @return  xml string of input array
+     */
     public static String table2XML(String[][] table, int table_id) {
         StringBuilder XMLstring = new StringBuilder("");
         XMLstring.append("<table id=\"").append(table_id).append("\">");
-        for (int i = 1; i < table.length; i++) {
+        for (int row = 1; row < table.length; row++) {
             XMLstring.append("<row>");
-            for (int j = 0; j < table[0].length; j++) {
+            for (int col = 0; col < table[0].length; col++) {
                 String starTag = "<row-entry>";
                 String endTag = "</row-entry>";
-                if (table[0][j] != null) {
-                    String header = table[0][j].trim().replaceAll("[^a-zA-Z0-9]", "");
+                if (table[0][col] != null) {
+                    String header = table[0][col].trim().replaceAll("[^a-zA-Z0-9]", "");
                     starTag = "<" + header + ">";
                     endTag = "</" + header + ">";
                 }
                 String string = "";
-                if (table[i][j] != null)
-                    string = table[i][j].trim().replaceAll("\n", " ");
+                if (table[row][col] != null)
+                    string = table[row][col].trim().replaceAll("\n", " ");
                 if (string.length() == 0)
                     string = "";
                 XMLstring.append(starTag).append(string).append(endTag);
