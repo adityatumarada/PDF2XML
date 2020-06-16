@@ -23,6 +23,9 @@ import java.util.*;
  * Author : Eshita
  */
 
+/**Returns an Array od the Details objects Each element (Details object) contains a table with its coordinates and the page-number that it is present on
+*/
+
 public class PDFTableStripper extends PDFTextStripper
 {
 
