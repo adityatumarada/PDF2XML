@@ -70,7 +70,6 @@ public class Table2XML {
         }
         XMLstring.append("</table>");
 
-
         return XMLstring.toString();
     }
 

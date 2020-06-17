@@ -1,6 +1,5 @@
 package com.example.pdf2xml;
 
-import com.opencsv.CSVWriter;
 import com.example.pdf2xml.models.Details;
 import org.apache.fontbox.util.BoundingBox;
 import org.apache.pdfbox.pdmodel.PDDocument;
@@ -31,7 +30,6 @@ public class PDFTableStripper extends PDFTextStripper
 {
 
     public static Details[] getDetails(PDDocument document) throws IOException {
-        CSVWriter writer = new CSVWriter(new FileWriter("/home/theperson/IdeaProjects/output1.csv"));
 
         // Some helper variables are declared
         double[] rowCoordinates;

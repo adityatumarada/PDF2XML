@@ -10,6 +10,7 @@ import com.example.pdf2xml.models.HTMLobject;
 import javafx.fxml.FXML;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Label;
+import javafx.scene.control.TextField;
 import javafx.stage.DirectoryChooser;
 import javafx.stage.FileChooser;
 import org.apache.pdfbox.pdmodel.PDDocument;
@@ -25,10 +26,13 @@ public class Controller {
     private String pdfPath = "";
     private String xmlPath = "";
     private  String folderPath="";
+
     @FXML
     private Label PDFPath;
     @FXML
     private Label XMLPath;
+    @FXML
+    private TextField abc;
 
     /**
      * Used to choose pdf
@@ -58,7 +62,6 @@ public class Controller {
     }
 
 
-
     /**
      * Selects pdf file path using <b> filechooser</b> and stores it
      */
@@ -67,7 +70,6 @@ public class Controller {
         fileChooser.setTitle(Constant.OPENPDF);
         File file=fileChooser.showOpenDialog(null);
         pdfPath=file.getAbsolutePath();
-        System.out.println(pdfPath);
         pdfPath.replace("\\", "/");
         PDFPath.setText(PDFPath.getText()+" "+pdfPath);
     }
@@ -91,8 +93,9 @@ public class Controller {
     /**
      * Converts pdf to xml
      */
-    public void convert(){
-        try {
+    public void convert()
+    {
+            String password = abc.getText();
 
             System.out.println(Constant.CONVERTING);
             //Alert window to inform user to not to close window
@@ -103,48 +106,62 @@ public class Controller {
             alert.showAndWait();
 
             Text2XML text2XML=new Text2XML();
+            File pdfFile = new File(pdfPath);
 
-            PDDocument pdf = PDDocument.load(new File(pdfPath));
+            Boolean extracted = false;
 
-            //extracting tables from pdf
-            Details[] tableDetails = PDFTableStripper.getDetails(pdf);
+            try(PDDocument pdf = PDDocument.load(pdfFile, password);) {
+                Details[] tableDetails = PDFTableStripper.getDetails(pdf);
 
-            //generates HTMLString
-            String htmlString = HTMLformatter.generateHTMLFromPDF(pdf);
+                //generates HTMLString
+                String htmlString = HTMLformatter.generateHTMLFromPDF(pdf);
 
-            //generates List of HTML objects.
-            ArrayList<List<HTMLobject>> htmlObjectList = HTMLformatter.parseHTML(htmlString);
+                //generates List of HTML objects.
+                ArrayList<List<HTMLobject>> htmlObjectList = HTMLformatter.parseHTML(htmlString);
 
-            //remove tables
-            for(Details table : tableDetails)
-            {
-                int pgNo = table.getPageNo();
-                List<HTMLobject> textList = removeTable(htmlObjectList.get(pgNo),table.getTableAllPoints());
-                htmlObjectList.set(pgNo,textList);
+                //remove tables
+                for(Details table : tableDetails)
+                {
+                    int pgNo = table.getPageNo();
+                    List<HTMLobject> textList = removeTable(htmlObjectList.get(pgNo),table.getTableAllPoints());
+                    htmlObjectList.set(pgNo,textList);
+                }
+
+                //converts tables to XML
+                List<String> XMLtable = Table2XML.convertToXML(tableDetails);
+
+                //generating xml file path using pdfpath and folderpath
+                xmlPath = getXMLPath(pdfPath,folderPath);
+
+                //use XMLtable and htmlObjectList for text2XML
+                text2XML.XMLGenerationCombined(htmlObjectList,xmlPath,XMLtable);
+
+                //extracting images
+                ImageExtractor.extractImages(pdf,folderPath);
+
+                extracted =true;
+
+            } catch (IOException e) {
+                // pop up incorrect password
+                Alert alert1 = new Alert(Alert.AlertType.INFORMATION);
+                alert1.setHeaderText(Constant.INCORRECTPASSWORD);
+                alert1.setWidth(50);
+                alert1.setHeight(50);
+                alert1.showAndWait();
+            } catch (ParserConfigurationException e) {
+                e.printStackTrace();
             }
 
-            //converts tables to XML
-            List<String> XMLtable = Table2XML.convertToXML(tableDetails);
 
-            //generating xml file path using pdfpath and folderpath
-            String xmlPath = getXMLPath(pdfPath,folderPath);
-
-            //use XMLtable and htmlObjectList for text2XML
-            text2XML.XMLGenerationCombined(htmlObjectList,xmlPath,XMLtable);
-
-            //extracting images
-            ImageExtractor.extractImages(pdf,folderPath);
+        //extracting tables from pdf
 
             //Alert dialog which informs users about completion of task
+        if(extracted) {
             Alert alert2 = new Alert(Alert.AlertType.INFORMATION);
             alert2.setHeaderText(Constant.COMPLETE);
             alert2.setWidth(50);
             alert2.setHeight(50);
             alert2.showAndWait();
-
-
-        } catch (IOException | ParserConfigurationException e) {
-            e.printStackTrace();
         }
 
 

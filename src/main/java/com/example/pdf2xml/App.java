@@ -18,8 +18,6 @@ public class App extends Application {
     private static Scene scene;
 
     /**
-     *
-     *
      * @throws IOException
      */
     @Override
@@ -29,8 +27,6 @@ public class App extends Application {
         stage.setTitle(Constant.PDFTOXMLCONVERSION);
         stage.show();
     }
-
-
 
     /**
      * loads fxml file through resources
