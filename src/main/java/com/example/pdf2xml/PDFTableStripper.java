@@ -92,28 +92,28 @@ public class PDFTableStripper extends PDFTextStripper
         int r = 0;
         double[][][] rowCooordHeight = new double[rowCoordinates.length][15][2];
         String[][] rowColumnWiseContent = new String[rowCoordinates.length][15];
-        for (int i = 0; i< rowCoordinates.length; i++){
+        for (int row = 0; row< rowCoordinates.length; row++){
 
             stripper = new PDFTableStripper();
             stripper.setSortByPosition(true);
 
             // Isolating each row
-            stripper.setRegion(new Rectangle((int) Math.round(0.0*res), (int) Math.round(rowCoordinates[i]), (int) Math.round(9*res), (int) Math.round(rowHeights[i])));
+            stripper.setRegion(new Rectangle((int) Math.round(0.0*res), (int) Math.round(rowCoordinates[row]), (int) Math.round(9*res), (int) Math.round(rowHeights[row])));
 
             // Repeat for each page of the PDF
-            int page = rowPage[i];
+            int page = rowPage[row];
             PDPage pdPage = document.getPage(page);
             Rectangle2D[][] regions = stripper.extractTable(pdPage);
 
             // Iterating through all columns of the row (only one row in each area)
-            for(int c=0; c<stripper.getColumns(); ++c) {
-                Rectangle2D region = regions[c][r];
+            for(int col=0; col<stripper.getColumns(); ++col) {
+                Rectangle2D region = regions[col][r];
                 rowCoordinates[r] = region.getMinY();
-                String text = stripper.getText(r, c);
+                String text = stripper.getText(r, col);
                 try {
-                    rowColumnWiseContent[i][c] = text;
-                    rowCooordHeight[i][c][0] = region.getMinX();
-                    rowCooordHeight[i][c][1] = region.getMaxX();
+                    rowColumnWiseContent[row][col] = text;
+                    rowCooordHeight[row][col][0] = region.getMinX();
+                    rowCooordHeight[row][col][1] = region.getMaxX();
                 }
                 catch(Exception e){}
             }
@@ -150,24 +150,24 @@ public class PDFTableStripper extends PDFTextStripper
         // Array to save the coordinate where each columnis separated from the next
         double[][] rowPartitions = new double[rowCoordinates.length][highestActualNumOfCol+1];
         double[][] rowPartitions_2 = new double[rowCoordinates.length][highestActualNumOfCol+1];
-        for (int i = 0; i<rowCoordinates.length; i++){
-            for (int j=0; j<highestActualNumOfCol; j++){
+        for (int row = 0; row<rowCoordinates.length; row++){
+            for (int col=0; col<highestActualNumOfCol; col++){
 
-                double x1 = rowCooordHeight[i][j][0];
-                double x2 = rowCooordHeight[i][j][1];
+                double x1 = rowCooordHeight[row][col][0];
+                double x2 = rowCooordHeight[row][col][1];
                 boolean found1 = false;
                 boolean found2 = false;
 
                 int firstNullElem = 0;
                 for (int k=0; k<highestActualNumOfCol;k++){
-                    if (rowPartitions[i][k] == 0.0){
+                    if (rowPartitions[row][k] == 0.0){
                         firstNullElem = k;
                         break;
                     }
-                    if (rowPartitions[i][k] == x1){
+                    if (rowPartitions[row][k] == x1){
                         found1 = true;
                     }
-                    if (rowPartitions[i][k] == x2){
+                    if (rowPartitions[row][k] == x2){
                         found2 = true;
                     }
                     if (found1 && found2){
@@ -175,30 +175,30 @@ public class PDFTableStripper extends PDFTextStripper
                     }
                 }
                 if (!found1 && x1!=0.0){
-                    rowPartitions[i][firstNullElem] = x1;
+                    rowPartitions[col][firstNullElem] = x1;
                     firstNullElem = firstNullElem + 1;
                 }
             }
         }
 
-        for (int i = 0; i<rowCoordinates.length; i++){
-            for (int j=0; j<highestActualNumOfCol; j++){
+        for (int row = 0; row<rowCoordinates.length; row++){
+            for (int col=0; col<highestActualNumOfCol; col++){
 
-                double x1 = rowCooordHeight[i][j][0];
-                double x2 = rowCooordHeight[i][j][1];
+                double x1 = rowCooordHeight[row][col][0];
+                double x2 = rowCooordHeight[row][col][1];
                 boolean found1 = false;
                 boolean found2 = false;
 
                 int firstNullElem = 0;
                 for (int k=0; k<highestActualNumOfCol;k++){
-                    if (rowPartitions_2[i][k] == 0.0){
+                    if (rowPartitions_2[row][k] == 0.0){
                         firstNullElem = k;
                         break;
                     }
-                    if (rowPartitions_2[i][k] == x1){
+                    if (rowPartitions_2[row][k] == x1){
                         found1 = true;
                     }
-                    if (rowPartitions_2[i][k] == x2){
+                    if (rowPartitions_2[row][k] == x2){
                         found2 = true;
                     }
                     if (found1 && found2){
@@ -207,12 +207,10 @@ public class PDFTableStripper extends PDFTextStripper
                 }
 
                 if (!found2 && x2!=0.0){
-                    rowPartitions_2[i][firstNullElem] = x2;
+                    rowPartitions_2[row][firstNullElem] = x2;
                 }
             }
         }
-
-        int b;
 
         // ****************** PART 4 ******************************************************
         // Finding the "Heading" rows (only start), using "points-based-system"
@@ -225,7 +223,7 @@ public class PDFTableStripper extends PDFTextStripper
 
         // Variable keeps track of the number of heading found
         int numOfHeadingRows = 0;
-        System.out.println("OOOOOOOOOOOOOOOo");
+//        System.out.println("OOOOOOOOOOOOOOOo");
         for (int i = 0; i<rowCoordinates.length; i++){
             System.out.println("___________________");
             for(int j = 0; j<highestActualNumOfCol; j++){
@@ -291,10 +289,8 @@ public class PDFTableStripper extends PDFTextStripper
                 arrayOfDetails[detailsPointer] = new Details();
                 arrayOfDetails[detailsPointer].setPageNo(rowPage[i]);
 
-//                    System.out.println("*** ");
                 tableHasBegun = true;
                 currentHeading = i;
-
 
                 r=0;
                 int j = i+1;
@@ -306,7 +302,7 @@ public class PDFTableStripper extends PDFTextStripper
 
                 String[][] Tables_temp = new String[totalNoOfRows][highestActualNumOfCol];
 
-                // Coordinates of the first row
+                // Adding elements of heading row
                 for (int l=0; l<highestActualNumOfCol; l++){
                     double x_1 = rowPartitions[i][l];
                     double x_2 = rowPartitions_2[i][l];
@@ -328,13 +324,13 @@ public class PDFTableStripper extends PDFTextStripper
                     int numberOfColumnsInCurrentRow = 0;
 
                     // Iterate through all columns of the current row
-                    for (int m=0; m<highestActualNumOfCol; m++){
-                        if (rowColumnWiseContent[j][m]!=null){
+                    for (int currentColIndex=0; currentColIndex<highestActualNumOfCol; currentColIndex++){
+                        if (rowColumnWiseContent[j][currentColIndex]!=null){
                             numberOfColumnsInCurrentRow++;
                         }
 
-                        double x_1 = rowPartitions[j][m];
-                        double x_2 = rowPartitions_2[j][m];
+                        double x_1 = rowPartitions[j][currentColIndex];
+                        double x_2 = rowPartitions_2[j][currentColIndex];
                         if (x_1<minY){
                             minY = x_1;
                         }
@@ -342,21 +338,24 @@ public class PDFTableStripper extends PDFTextStripper
                             maxY = x_2;
                         }
                         // Iterate thorugh all columns of the heading row
-                        for (int n=0; n<highestActualNumOfCol; n++){
+                        for (int headingColIndex=0; headingColIndex<highestActualNumOfCol; headingColIndex++){
 
-                            double diff = rowPartitions[currentHeading][m]- rowPartitions[j][n];
+                            double diff = rowPartitions[currentHeading][currentColIndex]- rowPartitions[j][headingColIndex];
                             if (diff>-15 && diff<15){
                                 pointsForSimilarityWithHeading++;
                                 tableHasBegun = false;
                                 break;
                             }
-                            double diff_2 = rowPartitions_2[currentHeading][m]- rowPartitions_2[j][n];
+                            double diff_2 = rowPartitions_2[currentHeading][currentColIndex]- rowPartitions_2[j][headingColIndex];
                             if (diff_2>-15 && diff_2<15){
                                 pointsForSimilarityWithHeading++;
                                 tableHasBegun = false;
                                 break;
                             }
-                            double diff_3 = ((rowPartitions_2[currentHeading][m]-rowPartitions[currentHeading][m])/2 +rowPartitions[currentHeading][m])- ((rowPartitions_2[currentHeading][m]-rowPartitions[j][n])/2 +rowPartitions[j][n]);
+                            double diff_3 = ((rowPartitions_2[currentHeading][currentColIndex]-rowPartitions[currentHeading][currentColIndex])/2
+                                                + rowPartitions[currentHeading][currentColIndex])
+                                            - ((rowPartitions_2[currentHeading][currentColIndex]-rowPartitions[j][headingColIndex])/2
+                                                +rowPartitions[j][headingColIndex]);
                             if (diff_3>-15 && diff_3<15){
                                 pointsForSimilarityWithHeading++;
                                 tableHasBegun = false;
@@ -369,12 +368,12 @@ public class PDFTableStripper extends PDFTextStripper
                     if (pointsForSimilarityWithHeading>=numberOfColumnsInCurrentRow-1 && numberOfColumnsInCurrentRow>=2){
                         int[] nearestColumnForLeftAligned = new int[highestActualNumOfCol];
                         String[] contents = new String[highestActualNumOfCol];
-                        for (int p=0; p<highestActualNumOfCol; p++){
+                        for (int colIndex=0; colIndex<highestActualNumOfCol; colIndex++){
                             int nearestIndex = 0;
-                            double minDiff = rowCooordHeight[j][p][0]-rowCooordHeight[i][nearestIndex][1];
+                            double minDiff = rowCooordHeight[j][colIndex][0]-rowCooordHeight[i][nearestIndex][1];
                             for (int q=0; q<highestActualNumOfCol;q++){
                                 int currentIndex = q;
-                                double diff = rowCooordHeight[j][p][0]-rowCooordHeight[i][currentIndex][1];
+                                double diff = rowCooordHeight[j][colIndex][0]-rowCooordHeight[i][currentIndex][1];
 
 
                                 if (minDiff<0){
@@ -382,14 +381,12 @@ public class PDFTableStripper extends PDFTextStripper
                                 }
                                 else if (diff<minDiff){
                                     nearestIndex=currentIndex;
-                                    nearestColumnForLeftAligned[p] = nearestIndex;
+                                    nearestColumnForLeftAligned[colIndex] = nearestIndex;
                                     minDiff = diff;
                                 }
                             }
-
-                            if (Tables_temp[r+1][nearestColumnForLeftAligned[p]]==null){
-                                Tables_temp[r+1][nearestColumnForLeftAligned[p]] = rowColumnWiseContent[j][p];
-
+                            if (Tables_temp[r+1][nearestColumnForLeftAligned[colIndex]]==null){
+                                Tables_temp[r+1][nearestColumnForLeftAligned[colIndex]] = rowColumnWiseContent[j][colIndex];
                             }
                         }
 
@@ -409,7 +406,7 @@ public class PDFTableStripper extends PDFTextStripper
                 System.out.println(r);
                 String[][] Tables = new String[r+1][highestActualNumOfCol];
                 for (int m=0; m<=r; m++){
-                    System.out.println("__________________");
+                    // System.out.println("__________________");
                     for (int n=0; n<highestActualNumOfCol; n++){
                         if (Tables_temp[m][n]!=null){
                             Tables[m][n] = Tables_temp[m][n].replaceAll("&lt;<", "&lt;").replaceAll("&amp;&", "&amp;");
@@ -418,7 +415,7 @@ public class PDFTableStripper extends PDFTextStripper
                             Tables[m][n] = Tables_temp[m][n];
                         }
 
-                        System.out.println("******" +Tables[m][n]);
+                        // System.out.println("******" +Tables[m][n]);
                     }
                     writer.writeNext(Tables[m]);
                 }
@@ -434,8 +431,6 @@ public class PDFTableStripper extends PDFTextStripper
                 y1 = minY;
                 y2 = maxY;
                 arrayOfDetails[detailsPointer].setTableAllPoints(new double[]{x1, x2, y1, y2});
-
-//                    stripper.setRegion(new Rectangle((int) Math.round(0.0*res), (int) Math.round(x1), (int) Math.round(9*res), (int) Math.round((x2-x1))));
 
                 detailsPointer++;
                 i = j;
