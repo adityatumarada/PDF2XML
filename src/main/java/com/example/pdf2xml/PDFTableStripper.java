@@ -1,7 +1,7 @@
 package com.example.pdf2xml;
 
 import com.example.pdf2xml.models.Details;
-import com.opencsv.CSVWriter;
+
 import org.apache.fontbox.util.BoundingBox;
 import org.apache.pdfbox.pdmodel.PDDocument;
 import org.apache.pdfbox.pdmodel.PDPage;
@@ -32,7 +32,6 @@ public class PDFTableStripper extends PDFTextStripper
 
     public static Details[] getDetails(PDDocument document) throws IOException {
 
-        CSVWriter writer = new CSVWriter(new FileWriter("/home/theperson/IdeaProjects/output1.csv"));
 
         // Some helper variables are declared
         double[] rowCoordinates;
@@ -43,7 +42,7 @@ public class PDFTableStripper extends PDFTextStripper
         // This number changes with the quality of the pdf
         final double res = 72;
 
-        String configFileName="src/main/resources/com/example/pdf2xml/cofigFile.txt";
+        //String configFileName="src/main/resources/com/example/pdf2xml/cofigFile.txt";
 
         PDFTableStripper stripper = new PDFTableStripper();
         stripper.setSortByPosition(true);
@@ -176,7 +175,7 @@ public class PDFTableStripper extends PDFTextStripper
                 }
                 if (!found1 && x1!=0.0){
                     rowPartitions[col][firstNullElem] = x1;
-                    firstNullElem = firstNullElem + 1;
+                    firstNullElem+=1;
                 }
             }
         }
@@ -232,7 +231,10 @@ public class PDFTableStripper extends PDFTextStripper
                 if (Content!=null) {
 
                     try {
-                        File file=new File(new File(configFileName).getCanonicalPath());    //creates a new file instance
+                        File file = new File(
+                                PDFTableStripper.class.getResource("cofigFile.txt").getFile()
+                        );
+                       // File file=new File(new File(configFileName).getCanonicalPath());    //creates a new file instance
                         FileReader fr=new FileReader(file);   //reads the file
                         BufferedReader br=new BufferedReader(fr);  //creates a buffering character input stream
                         StringBuffer sb=new StringBuffer();    //constructs a string buffer with no characters
@@ -417,9 +419,9 @@ public class PDFTableStripper extends PDFTextStripper
 
                         // System.out.println("******" +Tables[m][n]);
                     }
-                    writer.writeNext(Tables[m]);
+
                 }
-                writer.writeNext(new String[0]);
+
 
                 // Adding table to the "Details" object
                 arrayOfDetails[detailsPointer].setTables(Tables);
@@ -440,7 +442,7 @@ public class PDFTableStripper extends PDFTextStripper
                 i++;
             }
         }
-        writer.flush();
+
         return arrayOfDetails;
     }
 
