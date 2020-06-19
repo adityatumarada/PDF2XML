@@ -230,7 +230,7 @@ public class PDFTableStripper extends PDFTextStripper
                 // If certain keywords are found in the content of any of the columns, points are increased by 1 for each keyword
                 if (Content!=null) {
 
-                    try {
+                    /*try {
                         File file = new File(
                                 PDFTableStripper.class.getResource("cofigFile.txt").getFile()
                         );
@@ -250,6 +250,12 @@ public class PDFTableStripper extends PDFTextStripper
                     }
                     catch(IOException e) {
                         e.printStackTrace();
+                    }*/
+                    for(int index=0;index<Constant.KEYWORDS.length;index++){
+                        if(Content.contains(Constant.KEYWORDS[index])){
+                            headingPointsForEachRow[i]+=1;
+                        }
+
                     }
 
 

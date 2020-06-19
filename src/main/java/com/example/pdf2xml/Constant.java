@@ -24,4 +24,6 @@ public class Constant {
     static final String INCORRECTPASSWORD="Please enter valid password";
     static final String COMPLETE="The extraction is complete";
     static final String DOCUMENT="document";
+    static final String[] KEYWORDS={"Description","No.","Withdraw","Deposit","Debit","Credit","DEBIT","CREDIT","DATE"
+    ,"DATE","AMOUNT","Amount","`"};
 }
