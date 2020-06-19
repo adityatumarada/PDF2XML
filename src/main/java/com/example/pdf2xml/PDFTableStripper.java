@@ -32,7 +32,9 @@ public class PDFTableStripper extends PDFTextStripper
 
     public static Details[] getDetails(PDDocument document) throws IOException {
 
-
+        // VERY IMPORTANT: IF YOU GET THE "Exception in thread "main" java.lang.IndexOutOfBoundsException: Index: 60, Size: 60", then the following value
+        int highestAllowedNumberOfColumns = 60;
+        
         // Some helper variables are declared
         double[] rowCoordinates;
         double[] rowHeights;
@@ -89,8 +91,8 @@ public class PDFTableStripper extends PDFTextStripper
 
         // Stripping the entire document into rows
         int r = 0;
-        double[][][] rowCooordHeight = new double[rowCoordinates.length][15][2];
-        String[][] rowColumnWiseContent = new String[rowCoordinates.length][15];
+        double[][][] rowCooordHeight = new double[rowCoordinates.length][highestAllowedNumberOfColumns][2];
+        String[][] rowColumnWiseContent = new String[rowCoordinates.length][highestAllowedNumberOfColumns];
         for (int row = 0; row< rowCoordinates.length; row++){
 
             stripper = new PDFTableStripper();
