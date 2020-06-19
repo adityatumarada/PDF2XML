@@ -176,7 +176,7 @@ public class PDFTableStripper extends PDFTextStripper
                     }
                 }
                 if (!found1 && x1!=0.0){
-                    rowPartitions[col][firstNullElem] = x1;
+                    rowPartitions[row][firstNullElem] = x1;
                     firstNullElem+=1;
                 }
             }
